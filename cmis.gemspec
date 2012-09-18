@@ -8,12 +8,12 @@ Gem::Specification.new do |gem|
   gem.version       = Cmis::VERSION
   gem.authors       = ["Richard Nyström"]
   gem.email         = ["ricny046@gmail.com"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
-  gem.homepage      = ""
-
+  gem.description   = %q{A JRuby wrapper for the Apache Chemistry OpenCMIS client.}
+  gem.summary       = %q{A JRuby wrapper for the Apache Chemistry OpenCMIS client.}
+  gem.homepage      = "https://github.com/ricn/cmis"
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
+  gem.platform = "java"
 end
