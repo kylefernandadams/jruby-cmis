@@ -8,5 +8,35 @@ Dir[File.join(File.dirname(__FILE__), "../target/dependency/*.jar")].each do |ja
 end
 
 module CMIS
-  # Your code goes here...
+  import org.apache.chemistry.opencmis.client.api.Session
+  import org.apache.chemistry.opencmis.client.api.SessionFactory
+  import org.apache.chemistry.opencmis.client.runtime.SessionFactoryImpl
+  import org.apache.chemistry.opencmis.commons.enums.BindingType
+  import org.apache.chemistry.opencmis.commons.SessionParameter
+  
+  def self.create_session(url, user, password, repo_id)
+      session_factory = SessionFactoryImpl.new_instance
+      parameters = { 
+        SessionParameter::ATOMPUB_URL => url,
+        SessionParameter::BINDING_TYPE => BindingType::ATOMPUB.value,
+        SessionParameter::USER => user,
+        SessionParameter::PASSWORD => password,
+        SessionParameter::REPOSITORY_ID => repo_id
+      }
+
+      session_factory.create_session(parameters)
+  end
+
+  def self.repositories(url, user, password)
+    session_factory = SessionFactoryImpl.new_instance
+      parameters = { 
+        SessionParameter::ATOMPUB_URL => url,
+        SessionParameter::BINDING_TYPE => BindingType::ATOMPUB.value,
+        SessionParameter::USER => user,
+        SessionParameter::PASSWORD => password
+      }
+
+    session_factory.get_repositories(parameters)
+  end
+
 end
