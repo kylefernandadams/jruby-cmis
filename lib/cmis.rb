@@ -15,7 +15,8 @@ module CMIS
   import org.apache.chemistry.opencmis.commons.SessionParameter
   import org.apache.chemistry.opencmis.commons.PropertyIds
   import org.apache.chemistry.opencmis.commons.enums.VersioningState
-  import org.apache.chemistry.opencmis.commons.enums.UnfileObject;
+  import org.apache.chemistry.opencmis.commons.enums.UnfileObject
+  import org.apache.chemistry.opencmis.commons.impl.MimeTypes
 
   def self.create_session(url, user, password, repo_id)
       session_factory = SessionFactoryImpl.new_instance

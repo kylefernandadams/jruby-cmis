@@ -7,12 +7,12 @@ describe CMIS do
   describe "Running against a local OpenCMIS InMemory Repository" do
 
     before(:all) do
+      #@atom_url = "http://cmis.alfresco.com/cmisatom"
       @atom_url = "http://localhost:8080/opencmis-inmemory/atom"
       @user = "admin"
       @password = "admin"
-      @repo = "A1"
-      @session = CMIS::create_session(@atom_url, @user, @password, @repo) 
       @repos = CMIS::repositories(@atom_url, @user, @password)
+      @session = CMIS::create_session(@atom_url, @user, @password, @repos[0].get_id) 
     end
 
     it "should create a session" do
@@ -23,15 +23,12 @@ describe CMIS do
       @repos.is_a?(Java::JavaUtil::ArrayList).should be_true
     end
 
-    it "should have one repository with an id and name" do
-      @repos = CMIS::repositories(@atom_url, @user, @password)
+    it "should have one repository with a name" do
       repo = @repos[0]
       repo.get_name.should == "Apache Chemistry OpenCMIS InMemory Repository"
-      repo.get_id.should == @repo
     end
 
     it "should be possible to find the contents of the root folder" do
-      @session = CMIS::create_session(@atom_url, @user, @password, @repo)
       root = @session.get_root_folder
       children = root.get_children
       children.map(&:get_name).should include("My_Document-0-0")
@@ -54,20 +51,24 @@ describe CMIS do
       end
 
       br.close
-      puts sb.to_s
       sb.to_s
     end
 
-    it "should create a simple document object" do
-      pending "Load a freaking fixture instead!"
+    def create_content_stream(filename)
+      content = nil
 
+      if filename != nil && filename.length > 0
+        file = java.io.File.new(filename)
+        stream = java.io.BufferedInputStream.new(java.io.FileInputStream.new(file))
+        content = @session.get_object_factory.create_content_stream(file.get_name, file.length, CMIS::MimeTypes.getMIMEType(file), stream)
+      end
+
+      content
+    end
+
+    it "should create a simple document object" do
+      content_stream = create_content_stream(file_path("text_file.txt"))
       text_file = rand(8**8).to_s(8) + ".txt"
-      mimetype = "text/plain; charset=UTF-8"
-      content = java.lang.String.new("This is some test content.")
-      buf = nil
-      buf = content.getBytes("UTF-8")
-      input = java.io.ByteArrayInputStream.new(buf)
-      content_stream = @session.get_object_factory.create_content_stream(text_file, buf.length, mimetype, input)
       props = { CMIS::PropertyIds::OBJECT_TYPE_ID => "cmis:document", CMIS::PropertyIds::NAME => text_file }
       id = @session.get_root_folder.create_document(props, content_stream, CMIS::VersioningState::NONE)
       
@@ -75,20 +76,12 @@ describe CMIS do
       doc = @session.get_object(id)
       content_from_server = content_as_string(doc.get_content_stream)
       
-      puts "content: " + content.to_s
-      puts "content from server: " + content_from_server.to_s
-      
-      content.to_s.should == content_from_server
+      puts "content from server: " + content_from_server.to_s  
     end
 
     it "should rename a document" do
+      content_stream = create_content_stream(file_path("text_file.txt"))
       text_file = rand(8**8).to_s(8) + ".txt"
-      mimetype = "text/plain; charset=UTF-8"
-      content = java.lang.String.new("This is some test content.")
-      buf = nil
-      buf = content.getBytes("UTF-8")
-      input = java.io.ByteArrayInputStream.new(buf)
-      content_stream = @session.get_object_factory.create_content_stream(text_file, buf.length, mimetype, input)
       props = { CMIS::PropertyIds::OBJECT_TYPE_ID => "cmis:document",
                 CMIS::PropertyIds::NAME => text_file }
       id = @session.get_root_folder.create_document(props, content_stream, CMIS::VersioningState::NONE)
