@@ -81,7 +81,7 @@ describe CMIS do
       content.to_s.should == content_from_server
     end
 
-    it "should update a document" do
+    it "should rename a document" do
       text_file = rand(8**8).to_s(8) + ".txt"
       mimetype = "text/plain; charset=UTF-8"
       content = java.lang.String.new("This is some test content.")
@@ -93,32 +93,73 @@ describe CMIS do
                 CMIS::PropertyIds::NAME => text_file }
       id = @session.get_root_folder.create_document(props, content_stream, CMIS::VersioningState::NONE)
 
-      doc = @session.get_object(id)        
+      doc = @session.get_object(id)
+      renamed_text_file = "renamed_" + text_file
       props = { CMIS::PropertyIds::OBJECT_TYPE_ID => "cmis:document", 
-                CMIS::PropertyIds::NAME => "renamed_" + text_file }
-      id = doc.update_properties(props)
+                CMIS::PropertyIds::NAME => renamed_text_file }
+      
+      doc.update_properties(props)
 
-      doc.get_name.should == "renamed" + text_file
+      doc.get_name.should == renamed_text_file
+    end
+
+    it "should update the content of a document" do
+      pending
     end
 
     it "should delete a document" do
-      pending
+      text_file = rand(8**8).to_s(8) + ".txt"
+      mimetype = "text/plain; charset=UTF-8"
+      content = java.lang.String.new("This is some test content.")
+      buf = nil
+      buf = content.getBytes("UTF-8")
+      input = java.io.ByteArrayInputStream.new(buf)
+      content_stream = @session.get_object_factory.create_content_stream(text_file, buf.length, mimetype, input)
+      props = { CMIS::PropertyIds::OBJECT_TYPE_ID => "cmis:document",
+                CMIS::PropertyIds::NAME => text_file }
+      id = @session.get_root_folder.create_document(props, content_stream, CMIS::VersioningState::NONE)
+
+      doc = @session.get_object(id)
+     
+      doc.delete(true)
+      children = @session.get_root_folder.get_children
+      children.map(&:get_name).should_not include(text_file)
     end
 
     it "should delete a folder tree" do
-      pending
+      root = @session.get_root_folder
+      random_folder_name = rand(8**8).to_s(8)
+      folder1 = root.create_folder({ CMIS::PropertyIds::OBJECT_TYPE_ID => "cmis:folder", CMIS::PropertyIds::NAME => random_folder_name })
+      folder11 = folder1.create_folder({ CMIS::PropertyIds::OBJECT_TYPE_ID => "cmis:folder", CMIS::PropertyIds::NAME => "Folder11" })
+      folder12 = folder1.create_folder({ CMIS::PropertyIds::OBJECT_TYPE_ID => "cmis:folder", CMIS::PropertyIds::NAME => "Folder12" })
+      @session.get_root_folder.get_children.map(&:get_name).should include(random_folder_name)
+      folder1.delete_tree(true, CMIS::UnfileObject::DELETE, true)
+      @session.get_root_folder.get_children.map(&:get_name).should_not include(random_folder_name)
     end
 
     it "should be possible to navigate through a folder tree" do
-      pending
+      root = @session.get_root_folder
+      # just making sure it can be executed
+      root.get_descendants(-1).count.should > 0 # get folders and documents
+      root.get_folder_tree(-1).count.should > 0 # get folders only
     end
     
     it "should display the properties of an object" do
-      pending
+      props = @session.get_root_folder.get_properties   
+      props.each do |p|
+        disp_name = p.get_definition.get_display_name
+        p.get_value_as_string.should == "/" if disp_name == "Path"
+        p.get_value_as_string.should == "cmis:folder" if disp_name == "Type-Id"
+        p.get_value_as_string.should == "Admin" if disp_name == "Created By"
+        p.get_value_as_string.should == "RootFolder" if disp_name == "Name"
+        p.get_value_as_string.should == "100" if disp_name == "Object Id"
+        p.get_value_as_string.should be_nil if disp_name == "Parent Id"
+      end
     end
 
     it "should be possible to get a property explicitly" do
-      pending
+      # get a folder and show some of their props
+      # get a document and show soem of their props
     end
 
     it "should be possible to get a property value by id" do
@@ -130,6 +171,10 @@ describe CMIS do
     end
 
     it "should be possible to execute a simple query" do
+      pending
+    end
+
+    it "should be possible to read the repository info" do
       pending
     end
   end
