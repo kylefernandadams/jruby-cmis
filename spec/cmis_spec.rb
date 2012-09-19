@@ -16,7 +16,7 @@ describe CMIS do
     end
 
     it "should create a session" do
-      @session.respond_to?('get_repository_info').should be_true
+      @session.is_a?(Java::OrgApacheChemistryOpencmisClientRuntime::SessionImpl).should be_true
     end
 
     it "should retrieve all available repositories" do
@@ -59,7 +59,7 @@ describe CMIS do
     end
 
     it "should create a simple document object" do
-      pending
+      pending "Load a freaking fixture instead!"
 
       text_file = rand(8**8).to_s(8) + ".txt"
       mimetype = "text/plain; charset=UTF-8"
@@ -104,7 +104,7 @@ describe CMIS do
     end
 
     it "should update the content of a document" do
-      pending
+      pending "Load a freaking fixture!!"
     end
 
     it "should delete a document" do
@@ -158,24 +158,33 @@ describe CMIS do
     end
 
     it "should be possible to get a property explicitly" do
-      # get a folder and show some of their props
-      # get a document and show soem of their props
-    end
-
-    it "should be possible to get a property value by id" do
-      pending
-    end
-
-    it "should be possible to get a property value by query name" do
-      pending
+      # A couple of folder specific props that we can access explicitly
+      root = @session.get_root_folder
+      root.is_root_folder.should == true
+      root.get_path.should == "/"
     end
 
     it "should be possible to execute a simple query" do
-      pending
+      query = "SELECT * FROM cmis:document WHERE cmis:name LIKE 'My_Document-0-0'"
+      q = @session.query(query, false)
+      q.count.should == 1
+      q.each do |result|
+        result.get_property_by_query_name("cmis:name").get_first_value.should == "My_Document-0-0"
+        result.get_property_by_query_name("cmis:objectTypeId").get_first_value.should == "ComplexType"
+        result.get_property_by_query_name("cmis:contentStreamLength").get_first_value.should == "33401"
+      end
     end
 
     it "should be possible to read the repository info" do
-      pending
+      rep_info = @session.get_repository_info
+      cap = rep_info.get_capabilities
+
+      # Just testing a few of them
+      cap.is_get_descendants_supported.should == true
+      cap.is_get_folder_tree_supported.should == true
+      cap.get_changes_capability.value.should == "none"
+      cap.get_query_capability.value.should == "bothcombined"
+      cap.get_join_capability.value.should == "none"
     end
   end
 end
