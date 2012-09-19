@@ -8,8 +8,8 @@ Gem::Specification.new do |gem|
   gem.version       = Cmis::VERSION
   gem.authors       = ["Richard Nyström"]
   gem.email         = ["ricny046@gmail.com"]
-  gem.description   = %q{A JRuby wrapper for the Apache Chemistry OpenCMIS client.}
-  gem.summary       = %q{A JRuby wrapper for the Apache Chemistry OpenCMIS client.}
+  gem.description   = %q{A thin JRuby wrapper for the Apache Chemistry OpenCMIS client.}
+  gem.summary       = %q{A thin JRuby wrapper for the Apache Chemistry OpenCMIS client.}
   gem.homepage      = "https://github.com/ricn/cmis"
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
