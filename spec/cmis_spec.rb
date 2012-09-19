@@ -6,24 +6,24 @@ describe CMIS do
   
   describe "Running against Public OpenCMIS InMemory Repository" do
     it "should create a session" do
-      session = CMIS::create_session("http://repo.opencmis.org/inmemory/atom/", "admin", "admin", "A1")
+      session = CMIS::create_session("http://localhost:8080/opencmis-inmemory/atom", "admin", "admin", "A1")
       session.respond_to?('get_repository_info').should be_true
     end
 
     it "should retrieve all available repositories" do
-      repos = CMIS::repositories("http://repo.opencmis.org/inmemory/atom/", "admin", "admin")
+      repos = CMIS::repositories("http://localhost:8080/opencmis-inmemory/atom", "admin", "admin")
       repos.is_a?(Java::JavaUtil::ArrayList).should be_true
     end
 
     it "should have one repository with an id and name" do
-      repos = CMIS::repositories("http://repo.opencmis.org/inmemory/atom/", "admin", "admin")
+      repos = CMIS::repositories("http://localhost:8080/opencmis-inmemory/atom", "admin", "admin")
       repo = repos[0]
       repo.get_name.should == "Apache Chemistry OpenCMIS InMemory Repository"
       repo.get_id.should == "A1"
     end
 
     it "should be possible to find the contents of the root folder" do
-      session = CMIS::create_session("http://repo.opencmis.org/inmemory/atom/", "admin", "admin", "A1")
+      session = CMIS::create_session("http://localhost:8080/opencmis-inmemory/atom", "admin", "admin", "A1")
       root = session.get_root_folder
       children = root.get_children
 
