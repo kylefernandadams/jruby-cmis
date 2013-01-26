@@ -11,7 +11,7 @@ describe CMIS do
       @user = "admin"
       @password = "admin"
       @repos = CMIS::repositories(@atom_url, @user, @password)
-      @session = CMIS::create_session(@atom_url, @user, @password, @repos[0].get_id) 
+      @session = CMIS::create_session(@atom_url, @user, @password, @repos[0].id) 
     end
 
     it "should create a session" do
