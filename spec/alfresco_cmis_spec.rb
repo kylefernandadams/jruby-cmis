@@ -80,7 +80,7 @@ describe "Alfresco CMIS" do
 
     it "should be possible to check if a document is versionable" do
       content_stream = CMIS::create_content_stream(file_path("text_file.txt"), @session)
-      text_file = rand(8**8).to_s(8) + ".txt"
+      text_file = random_name + ".txt"
       props = { CMIS::PropertyIds::OBJECT_TYPE_ID => "cmis:document", CMIS::PropertyIds::NAME => text_file }
       id = @test_folder.create_document(props, content_stream, CMIS::VersioningState::MAJOR)
       doc = @session.get_object(id)
@@ -89,7 +89,7 @@ describe "Alfresco CMIS" do
 
     it "should be possible to check if a document is versionable" do
       file = file_path("text_file.txt")
-      name = rand(8**8).to_s(8) + ".txt"
+      name = random_name + ".txt"
       id = @test_folder.create_cmis_document(name, file)
       doc = @session.get_object(id)
       doc.type.is_versionable.should == true
@@ -101,23 +101,23 @@ describe "Alfresco CMIS" do
     # TODO: Clean up the mess afterwards
 
     it "should create a folder" do
-      random_name = rand(8**8).to_s(8)
-      new_folder_props = { CMIS::PropertyIds::OBJECT_TYPE_ID => "cmis:folder", CMIS::PropertyIds::NAME => random_name }
+      name = random_name
+      new_folder_props = { CMIS::PropertyIds::OBJECT_TYPE_ID => "cmis:folder", CMIS::PropertyIds::NAME => name }
       @test_folder.create_folder(new_folder_props)
-      @test_folder.children.map(&:name).should include(random_name)
+      @test_folder.children.map(&:name).should include(name)
     end
 
     it "should create a folder using convenient method" do
-      random_name = rand(8**8).to_s(8)
-      @test_folder.create_cmis_folder(random_name)
-      @test_folder.children.map(&:name).should include(random_name)
+      name = random_name
+      @test_folder.create_cmis_folder(name)
+      @test_folder.children.map(&:name).should include(name)
     end
 
     it "should create a folder using convenient method and specifying custom props"
 
     it "should create document" do
       content_stream = CMIS::create_content_stream(file_path("text_file.txt"), @session)
-      text_file = rand(8**8).to_s(8) + ".txt"
+      text_file = random_name + ".txt"
       props = { CMIS::PropertyIds::OBJECT_TYPE_ID => "cmis:document", CMIS::PropertyIds::NAME => text_file }
       id = @test_folder.create_document(props, content_stream, CMIS::VersioningState::MAJOR)
       doc = @session.get_object(id)
@@ -126,7 +126,7 @@ describe "Alfresco CMIS" do
 
     it "should create document using convenient method" do
       file = file_path("text_file.txt")
-      file_name = rand(8**8).to_s(8) + ".txt"
+      file_name = random_name + ".txt"
       id = @test_folder.create_cmis_document(file_name, file)
       doc = @session.get_object(id)
       #puts doc.inspect # Do something here
@@ -136,7 +136,7 @@ describe "Alfresco CMIS" do
   describe "Updating objects" do
     it "should rename a document" do
       file = file_path("text_file.txt")
-      file_name = rand(8**8).to_s(8) + ".txt"
+      file_name = random_name + ".txt"
       id = @test_folder.create_cmis_document(file_name, file)
 
       doc = @session.get_object(id)
@@ -156,7 +156,7 @@ describe "Alfresco CMIS" do
   describe "Deleting objects" do
     it "should delete a document" do
       content_stream = CMIS::create_content_stream(file_path("text_file.txt"), @session)
-      text_file = rand(8**8).to_s(8) + ".txt"
+      text_file = random_name + ".txt"
       props = { CMIS::PropertyIds::OBJECT_TYPE_ID => "cmis:document",
                 CMIS::PropertyIds::NAME => text_file }
       id = @test_folder.create_document(props, content_stream, CMIS::VersioningState::MAJOR)
@@ -170,7 +170,7 @@ describe "Alfresco CMIS" do
 
     it "should delete a folder tree" do
       root = @test_folder
-      random_folder_name = rand(8**8).to_s(8)
+      random_folder_name = random_name
       folder1 = root.create_cmis_folder(random_folder_name)
       folder11 = folder1.create_cmis_folder("Folder11")
       folder12 = folder1.create_cmis_folder("Folder12")

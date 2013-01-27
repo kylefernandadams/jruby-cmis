@@ -4,6 +4,11 @@ def file_path( *paths )
   File.expand_path(File.join(File.dirname(__FILE__), 'fixtures', *paths))
 end
 
+
+def random_name
+  rand(16**16).to_s(16)
+end
+
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
   config.treat_symbols_as_metadata_keys_with_true_values = true
