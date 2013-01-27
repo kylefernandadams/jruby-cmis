@@ -113,8 +113,6 @@ describe "Alfresco CMIS" do
       @test_folder.children.map(&:name).should include(name)
     end
 
-    it "should create a folder using convenient method and specifying custom props"
-
     it "should create document" do
       content_stream = CMIS::create_content_stream(file_path("text_file.txt"), @session)
       text_file = random_name + ".txt"
@@ -129,7 +127,10 @@ describe "Alfresco CMIS" do
       file_name = random_name + ".txt"
       id = @test_folder.create_cmis_document(file_name, file)
       doc = @session.get_object(id)
-      #puts doc.inspect # Do something here
+
+      doc.properties.each do |p|
+        p.value.should == 16 if p.definition.id == "cmis:contentStreamLength"
+      end
     end
   end
 
@@ -148,8 +149,21 @@ describe "Alfresco CMIS" do
       doc.name.should == renamed_file_name
     end
 
-    it "should update the content of a document" do
-      pending "Load a freaking fixture!!"
+    it "should update the content of a document (versioning)", focus: true do
+      file = file_path("text_file.txt")
+      file_name = random_name + ".txt"
+      id = @test_folder.create_cmis_document(file_name, file)
+      doc = @session.get_object(id)
+    
+      content_stream = CMIS::create_content_stream(file_path("text_file2.txt"), @session)
+      working_copy = @session.get_object(doc.check_out)
+      id = working_copy.check_in(false, nil, content_stream, "minor version")
+      doc = @session.get_object(id)
+    
+      doc.properties.each do |p|
+        p.value.should == 17 if p.definition.id == "cmis:contentStreamLength"
+      end
+
     end
   end
 
