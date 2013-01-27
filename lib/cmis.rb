@@ -41,7 +41,6 @@ module CMIS
   import org.apache.chemistry.opencmis.commons.enums.UnfileObject
   import org.apache.chemistry.opencmis.commons.enums.Updatability
 
-
   FolderImpl = org.apache.chemistry.opencmis.client.runtime.FolderImpl
   
   class FolderImpl
