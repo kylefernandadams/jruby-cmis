@@ -79,20 +79,29 @@ describe "Alfresco CMIS" do
     end
 
     it "should be possible to check if a document is versionable" do
-      content_stream = CMIS::create_content_stream(file_path("text_file.txt"), @session)
-      text_file = random_name + ".txt"
-      props = { CMIS::PropertyIds::OBJECT_TYPE_ID => "cmis:document", CMIS::PropertyIds::NAME => text_file }
-      id = @test_folder.create_document(props, content_stream, CMIS::VersioningState::MAJOR)
-      doc = @session.get_object(id)
-      doc.type.is_versionable.should == true
-    end
-
-    it "should be possible to check if a document is versionable" do
       file = file_path("text_file.txt")
       name = random_name + ".txt"
       id = @test_folder.create_cmis_document(name, file)
       doc = @session.get_object(id)
       doc.type.is_versionable.should == true
+    end
+
+    it "should be possible to access information about renditions" do
+      file = file_path("document.pdf")
+      file_name = random_name + ".pdf"
+      id = @test_folder.create_cmis_document(file_name, file)      
+      context = @session.create_operation_context
+      context.rendition_filter_string = "cmis:thumbnail"
+      @session.clear
+      doc = @session.get_object(id, context)
+
+      renditions = doc.renditions
+      # TODO: Fix this test.
+      renditions.size.should >= 1
+      renditions.each do |r|
+        puts r.kind
+        puts r.mime_type
+      end
     end
   end
 
@@ -149,7 +158,7 @@ describe "Alfresco CMIS" do
       doc.name.should == renamed_file_name
     end
 
-    it "should update the content of a document (versioning)", focus: true do
+    it "should update the content of a document (versioning)" do
       file = file_path("text_file.txt")
       file_name = random_name + ".txt"
       id = @test_folder.create_cmis_document(file_name, file)
@@ -159,10 +168,14 @@ describe "Alfresco CMIS" do
       working_copy = @session.get_object(doc.check_out)
       id = working_copy.check_in(false, nil, content_stream, "minor version")
       doc = @session.get_object(id)
-    
+      
       doc.properties.each do |p|
         p.value.should == 17 if p.definition.id == "cmis:contentStreamLength"
+        p.value.should == "1.1" if p.definition.id == "cmis:versionLabel"
       end
+
+      versions = doc.all_versions
+      versions.size.should == 2
 
     end
   end
