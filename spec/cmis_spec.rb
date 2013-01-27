@@ -104,6 +104,138 @@ describe "CMIS" do
         end
       end
     end
+
+    describe "Writing objects" do
+      it "should create a folder" do
+        name = random_name
+        new_folder_props = { CMIS::PropertyIds::OBJECT_TYPE_ID => "cmis:folder", CMIS::PropertyIds::NAME => name }
+        @test_folder.create_folder(new_folder_props)
+        @test_folder.children.map(&:name).should include(name)
+      end
+
+      it "should create a folder using convenient method" do
+        name = random_name
+        @test_folder.create_cmis_folder(name)
+        @test_folder.children.map(&:name).should include(name)
+      end
+
+      it "should create document" do
+        content_stream = CMIS::create_content_stream(file_path("text_file.txt"), @session)
+        text_file = random_name + ".txt"
+        props = { CMIS::PropertyIds::OBJECT_TYPE_ID => "cmis:document", CMIS::PropertyIds::NAME => text_file }
+        id = @test_folder.create_document(props, content_stream, CMIS::VersioningState::MAJOR)
+        doc = @session.get_object(id)
+    
+        doc.properties.each do |p|
+          p.value.should == 16 if p.definition.id == "cmis:contentStreamLength"
+        end
+      end
+
+      it "should create document using convenient method" do
+        file = file_path("text_file.txt")
+        file_name = random_name + ".txt"
+        id = @test_folder.create_cmis_document(file_name, file)
+        doc = @session.get_object(id)
+
+        doc.properties.each do |p|
+          p.value.should == 16 if p.definition.id == "cmis:contentStreamLength"
+        end
+      end
+    end
+
+    describe "Updating objects" do
+      it "should rename a document" do
+        file = file_path("text_file.txt")
+        file_name = random_name + ".txt"
+        id = @test_folder.create_cmis_document(file_name, file)
+
+        doc = @session.get_object(id)
+        renamed_file_name = "renamed_" + file_name
+        props = { CMIS::PropertyIds::OBJECT_TYPE_ID => "cmis:document", 
+                  CMIS::PropertyIds::NAME => renamed_file_name }
+        doc.update_properties(props)
+
+        doc.name.should == renamed_file_name
+      end
+
+      it "should update the content of a document (versioning)" do
+        file = file_path("text_file.txt")
+        file_name = random_name + ".txt"
+        id = @test_folder.create_cmis_document(file_name, file)
+        doc = @session.get_object(id)
+    
+        content_stream = CMIS::create_content_stream(file_path("text_file2.txt"), @session)
+        working_copy = @session.get_object(doc.check_out)
+        id = working_copy.check_in(false, nil, content_stream, "minor version")
+        doc = @session.get_object(id)
+      
+        doc.properties.each do |p|
+          p.value.should == 17 if p.definition.id == "cmis:contentStreamLength"
+          p.value.should == "1.1" if p.definition.id == "cmis:versionLabel"
+        end
+
+        versions = doc.all_versions
+        versions.size.should == 2
+      end
+    end
+
+    describe "Deleting objects" do
+      it "should delete a document" do
+        content_stream = CMIS::create_content_stream(file_path("text_file.txt"), @session)
+        text_file = random_name + ".txt"
+        props = { CMIS::PropertyIds::OBJECT_TYPE_ID => "cmis:document",
+                CMIS::PropertyIds::NAME => text_file }
+        id = @test_folder.create_document(props, content_stream, CMIS::VersioningState::MAJOR)
+
+        doc = @session.get_object(id)
+     
+        doc.delete(true)
+        children = @test_folder.children
+        children.map(&:name).should_not include(text_file)
+      end
+
+      it "should delete a folder tree" do
+        root = @test_folder
+        random_folder_name = random_name
+        folder1 = root.create_cmis_folder(random_folder_name)
+        folder11 = folder1.create_cmis_folder("Folder11")
+        folder12 = folder1.create_cmis_folder("Folder12")
+        @test_folder.children.map(&:name).should include(random_folder_name)
+        folder1.delete_tree(true, CMIS::UnfileObject::DELETE, true)
+        @test_folder.children.map(&:name).should_not include(random_folder_name)
+      end
+    end
+
+    describe "Querying and navigating objects" do
+      it "should be possible to navigate through a folder tree" do
+        root = @session.root_folder
+        # just making sure it can be executed
+        root.descendants(-1).count.should > 0 # get folders and documents
+        root.folder_tree(-1).count.should > 0 # get folders only
+      end
+
+      it "should be possible to execute a simple query" do
+        query = "SELECT cmis:name FROM cmis:folder WHERE cmis:name = 'Company Home'"
+        q = @session.query(query, false)
+      
+        q.each do |result|
+          result.get_property_value_by_query_name("cmis:name").should == "Company Home"
+        end
+      end
+
+      it "should be possible to use paging" do
+        @sub_folder = @test_folder.create_cmis_folder("Paging")
+
+        5.times do
+          @sub_folder.create_cmis_folder(random_name)
+        end
+
+        oc = CMIS::OperationContextImpl.new
+        oc.max_items_per_page = 3
+        @sub_folder.children(oc).skip_to(0).page.map(&:name).size.should == 3
+        @sub_folder.children.map(&:name).size.should == 5
+      end
+    end
   end
 
   describe "Alfresco" do
