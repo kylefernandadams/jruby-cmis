@@ -1,6 +1,8 @@
 # Cmis
 
-TODO: Write a gem description
+A JRuby thin wrapper for the Apache Chemistry OpenCMIS Java libraries.
+
+More information about Apache Chemistry can be found here: http://chemistry.apache.org/
 
 ## Installation
 
@@ -18,7 +20,11 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+This guide is for JRuby developers who want to access CMIS-compliant content repositories from JRuby. The examples has been written to work with Alfresco Community Edition 4.2.c which is one of the most feature complete CMIS content repository. If you want to test the code snippets below you have to download and install Alfresco. You can find the version that fits your platform here: http://wiki.alfresco.com/wiki/Download_and_Install_Alfresco
+
+### Connecting to a CMIS repository
+
+### 
 
 ## Contributing
 
