@@ -65,6 +65,7 @@ describe CMIS do
       content
     end
 
+    # TODO: FIX THIS SHIT
     it "should create a simple document object" do
       content_stream = create_content_stream(file_path("text_file.txt"))
       text_file = rand(8**8).to_s(8) + ".txt"
@@ -75,7 +76,8 @@ describe CMIS do
       doc = @session.get_object(id)
       content_from_server = content_as_string(doc.content_stream)
       
-      puts "content from server: " + content_from_server.to_s  
+      puts "content from server as string: " + content_from_server.to_s  
+      puts "content from server: " + doc.content_stream.to_s
     end
 
     it "should rename a document" do
@@ -174,9 +176,27 @@ describe CMIS do
       # Just testing a few of them
       cap.is_get_descendants_supported.should == true
       cap.is_get_folder_tree_supported.should == true
-      cap.get_changes_capability.value.should == "none"
-      cap.get_query_capability.value.should == "bothcombined"
-      cap.get_join_capability.value.should == "none"
+      cap.changes_capability.value.should == "none"
+      cap.query_capability.value.should == "bothcombined"
+      cap.join_capability.value.should == "none"
+    end
+
+    it "should throw a CmisBaseException when something goes wrong" do
+      pending
+    end
+
+    it "should retrieve allowable actions for an object" do
+      allowed_actions = @session.root_folder.allowable_actions.allowable_actions # Are you kidding me!!?
+      allowed_actions.to_a.should include(CMIS::Action::CAN_GET_PROPERTIES)
+    end
+
+    it "should be possible to check if a document is versionable" do
+      content_stream = create_content_stream(file_path("text_file.txt"))
+      text_file = rand(8**8).to_s(8) + ".txt"
+      props = { CMIS::PropertyIds::OBJECT_TYPE_ID => "cmis:document", CMIS::PropertyIds::NAME => text_file }
+      id = @session.root_folder.create_document(props, content_stream, CMIS::VersioningState::NONE)
+      doc = @session.get_object(id)
+      doc.type.is_versionable.should == false
     end
   end
 end
