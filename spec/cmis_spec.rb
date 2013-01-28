@@ -80,10 +80,7 @@ describe "CMIS" do
       end
 
       it "should be possible to check if a document is versionable" do
-        file = file_path("text_file.txt")
-        name = random_name + ".txt"
-        id = @test_folder.create_cmis_document(name, file)
-        doc = @session.get_object(id)
+        doc = create_random_doc(@test_folder)
         doc.type.is_versionable.should == true
       end
 
@@ -105,7 +102,7 @@ describe "CMIS" do
         end
       end
 
-      it "should be possible to download document", focus: true do
+      it "should be possible to download document" do
         doc = create_random_doc(@test_folder)
         file = Dir.tmpdir + doc.name
         doc.download(file)
@@ -165,12 +162,8 @@ describe "CMIS" do
 
     describe "Updating objects" do
       it "should rename a document" do
-        file = file_path("text_file.txt")
-        file_name = random_name + ".txt"
-        id = @test_folder.create_cmis_document(file_name, file)
-
-        doc = @session.get_object(id)
-        renamed_file_name = "renamed_" + file_name
+        doc = create_random_doc(@test_folder)
+        renamed_file_name = "renamed_" + doc.name
         props = { CMIS::PropertyIds::OBJECT_TYPE_ID => "cmis:document", 
                   CMIS::PropertyIds::NAME => renamed_file_name }
         doc.update_properties(props)
@@ -179,10 +172,7 @@ describe "CMIS" do
       end
 
       it "should update the content of a document (versioning)" do
-        file = file_path("text_file.txt")
-        file_name = random_name + ".txt"
-        id = @test_folder.create_cmis_document(file_name, file)
-        doc = @session.get_object(id)
+        doc = create_random_doc(@test_folder)
     
         content_stream = CMIS::create_content_stream(file_path("text_file2.txt"), @session)
         working_copy = @session.get_object(doc.check_out)
