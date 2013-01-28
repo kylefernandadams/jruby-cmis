@@ -104,9 +104,9 @@ puts "Content stream mime type: " + doc.content_stream_mime_type
 
 ## Working with CMIS Queries. NOT WORKING :-(
 
-query = "SELECT cmis:name FROM cmis:document WHERE cmis:name = 'cmis%'"
+query = "SELECT * FROM cmis:document WHERE cmis:name LIKE 'cmis%'"
 q = @session.query(query, false) # true means search all versions
 
 q.each do |result|
-  puts result.property_value_by_query_name("cmis:name")
+  puts result.property_value_by_query_name("cmis:name").inspect
 end
