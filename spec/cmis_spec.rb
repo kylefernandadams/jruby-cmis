@@ -253,7 +253,7 @@ describe "CMIS" do
     user = "admin"
     password = "admin"
 
-    it_behaves_like "a CMIS repository", atom_url, user, password
+    #it_behaves_like "a CMIS repository", atom_url, user, password
   end
 
   describe "Alfresco" do
@@ -261,7 +261,7 @@ describe "CMIS" do
     user = "admin"
     password = "admin"
     
-    #it_behaves_like "a CMIS repository", atom_url, user, password
+    it_behaves_like "a CMIS repository", atom_url, user, password
   end
 
   describe "Nuxeo" do
@@ -269,6 +269,6 @@ describe "CMIS" do
     user = "Administrator"
     password = "Administrator"
     
-    #it_behaves_like "a CMIS repository", atom_url, user, password
+    it_behaves_like "a CMIS repository", atom_url, user, password
   end
 end
