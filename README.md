@@ -75,9 +75,7 @@ root.create_folder(folder_props)
 
 ### Creating/Uploading documents
 
-Create a document object the simple way.
-
-The create_cmis_document is a convenient method implemented in the JRuby CMIS Library.
+The create_cmis_document method is a convenient method implemented in the JRuby CMIS Library.
 This method takes a name and a file path and uploads the file to the repository. The document will be saved as a major version.
 
 ```ruby
@@ -86,7 +84,7 @@ doc = @session.get_object(id)
 puts doc.name
 ```
 
-#### Create a document object the hard way (but with more flexibility):
+#### Create a document the hard way (but with more flexibility)
 
 ```ruby
 content_stream = CMIS::create_content_stream("/Users/ricn/cmis_logo.png", @session)
