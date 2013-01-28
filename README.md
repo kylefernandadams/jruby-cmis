@@ -179,13 +179,14 @@ q.each do |result|
 end
 ```
 
-TODO: Add Multi-filing and Unfiling examples
-TODO: Add Relationships examples
-TODO: Add Access control examples
-TODO: Add OperationContext examples
-TODO: Add Advanced types usage examples
-TODO: Add Performance notes
-TODO: Add Troubleshooting notes
+## DOCUMENTION TODO:
+* Add Multi-filing and Unfiling examples
+* Add Relationships examples
+* Add Access control examples
+* Add OperationContext examples
+* Add Advanced types usage examples
+* Add Performance notes
+* Add Troubleshooting notes
 
 ## Contributing
 
