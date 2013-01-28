@@ -33,12 +33,14 @@ Or install it yourself as:
 
 ## Usage
 
-This guide is for JRuby developers who want to access CMIS-compliant content repositories from JRuby. The examples has been written to work with Alfresco Community Edition 4.2.c which is one of the most feature complete CMIS content repository.
+This guide is for JRuby developers who want to access CMIS-compliant content repositories from JRuby. The examples has been tested with Alfresco Community Edition 4.2.c which is one of the most feature complete CMIS content repository.
 
 If you want to run the code snippets below you can download and install Alfresco. You can find the version that fits your platform here: http://wiki.alfresco.com/wiki/Download_and_Install_Alfresco
 
-You can also run the code snippets using the Public Alfresco CMIS server. More information can be found here: http://cmis.alfresco.com. The atom url for the public 
+You can also run the examples using the Public Alfresco CMIS server. More information can be found here: http://cmis.alfresco.com. The atom url for the public 
 server is http://cmis.alfresco.com/cmisatom.
+
+Nuxeo also provides a demo server. More information can be found here: http://doc.nuxeo.com/display/NXDOC/CMIS+for+Nuxeo#CMISforNuxeo-Onlinedemo .
 
 ## Connecting to a CMIS repository
 
@@ -188,7 +190,7 @@ query = "SELECT * FROM cmis:document WHERE cmis:name LIKE 'cmis%'"
 q = @session.query(query, false) # true means search all versions
 
 q.each do |result|
-  puts result.property_value_by_query_name("cmis:name").inspect
+  puts result.property_value_by_query_name("cmis:name")
 end
 ```
 
