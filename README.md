@@ -1,8 +1,20 @@
 # CMIS
 
-A JRuby thin wrapper for the Apache Chemistry OpenCMIS Java libraries.
+CMIS client for JRuby. This gem uses the Apache Chemistry OpenCMIS Java libraries under the hood.
 
 More information about Apache Chemistry can be found here: http://chemistry.apache.org/
+
+## What is CMIS
+
+Content Management Interoperability Services (CMIS) is an open standard that defines an abstraction layer for controlling diverse document management systems and repositories using web protocols. CMIS defines a domain model plus Web Services and Restful AtomPub (RFC5023) bindings that can be used by applications.
+
+Here are a few CMIS-compliant content repositories:
+
+* [Alfresco](http://www.alfresco.com)
+* [Nuxeo](http://www.nuxeo.com)
+* [EMC Documentum](http://www.emc.com/domains/documentum/index.htm)
+* [Sharepoint](http://sharepoint.microsoft.com/en-us/Pages/default.aspx)
+* [IBM FileNet Content Manager](http://www-01.ibm.com/software/data/content-management/filenet-content-manager/)
 
 ## Installation
 
