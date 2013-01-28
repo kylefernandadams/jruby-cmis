@@ -195,6 +195,11 @@ end
 ```
 
 ## DOCUMENTION TODO:
+* Add paging examples
+* Add Capabilities examples
+* Add allowable actions examples
+* Add versioning examples
+* Add renditions examples
 * Add Multi-filing and Unfiling examples
 * Add Relationships examples
 * Add Access control examples
