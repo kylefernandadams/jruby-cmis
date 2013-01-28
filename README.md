@@ -1,4 +1,4 @@
-# Cmis
+# CMIS
 
 A JRuby thin wrapper for the Apache Chemistry OpenCMIS Java libraries.
 
@@ -28,7 +28,7 @@ To be able to do anything useful on a CMIS repository, you must first find a rep
 
 ```ruby
 
-atom_url = "http://localhost:8181/alfresco/service/cmis"
+atom_url = "http://localhost:8080/alfresco/service/cmis"
 user = "admin"
 password = "admin"
 @session = CMIS::create_session(atom_url, user, password)
@@ -52,14 +52,15 @@ Finding the contents of the root folder:
 root = @session.root_folder
 children = root.children
 
+# Prints out all children objects name found in the root folder
 children.each do |o|
-  puts o.name # Prints out all children objects found in the root folder 
+  puts o.name
 end
 ```
 
 ### Creating folders
 
-Create a folder the simple way. This is a convenient method implemented in the JRuby CMIS library.
+Create a folder the simple way. The create_cmis_folder method is a convenient method implemented in the JRuby CMIS library.
 
 ```ruby
 root.create_cmis_folder("My new folder")
@@ -74,9 +75,9 @@ root.create_folder(folder_props)
 
 ### Creating/Uploading documents
 
-#### Create a document object the simple way. 
+Create a document object the simple way.
 
-This is a convenient method implemented in the JRuby CMIS Library.
+The create_cmis_document is a convenient method implemented in the JRuby CMIS Library.
 This method takes a name and a file path and uploads the file to the repository. The document will be saved as a major version.
 
 ```ruby
@@ -85,11 +86,22 @@ doc = @session.get_object(id)
 puts doc.name
 ```
 
-#### Create a document object the hard way:
-# TODO
+#### Create a document object the hard way (but with more flexibility):
 
-#### Download a document to your local disk:
-# TODO
+```ruby
+content_stream = CMIS::create_content_stream("/Users/ricn/cmis_logo.png", @session)
+props = { CMIS::PropertyIds::OBJECT_TYPE_ID => "cmis:document", CMIS::PropertyIds::NAME => "cmis_logo.png" }
+id = @test_folder.create_document(props, content_stream, CMIS::VersioningState::MAJOR)
+doc = @session.get_object(id)
+```
+
+#### Download a document to your local disk
+
+```ruby
+doc = @session.get_object(id)
+file = "/Users/ricn/" + doc.name
+doc.download(file)
+```
 
 ### Updating a document
 
@@ -153,7 +165,8 @@ puts "Content stream file name: " + doc.content_stream_file_name
 puts "Content stream mime type: " + doc.content_stream_mime_type
 ```
 
-### Working with CMIS Queries.
+## Working with CMIS Queries
+
 ```ruby
 query = "SELECT * FROM cmis:document WHERE cmis:name LIKE 'cmis%'"
 q = @session.query(query, false) # true means search all versions
