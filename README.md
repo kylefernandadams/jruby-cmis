@@ -107,7 +107,7 @@ puts doc.name
 ```ruby
 content_stream = CMIS::create_content_stream("/Users/ricn/cmis_logo.png", @session)
 props = { CMIS::PropertyIds::OBJECT_TYPE_ID => "cmis:document", CMIS::PropertyIds::NAME => "cmis_logo.png" }
-id = @test_folder.create_document(props, content_stream, CMIS::VersioningState::MAJOR)
+id = root.create_document(props, content_stream, CMIS::VersioningState::MAJOR)
 doc = @session.get_object(id)
 ```
 
@@ -173,7 +173,7 @@ puts "Is root folder? " + root.is_root_folder.to_s
 puts "Path: " + root.path
 
 # For a document
-id = root.create_cmis_document("cmis_logo_original.png", "/Users/ricn/cmis_logo.png")
+id = root.create_cmis_document("cmis.png", "/Users/ricn/cmis_logo.png")
 doc = @session.get_object(id)
 puts "Name: " + doc.name
 puts "Version label: " + doc.version_label
