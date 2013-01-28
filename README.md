@@ -20,7 +20,12 @@ Or install it yourself as:
 
 ## Usage
 
-This guide is for JRuby developers who want to access CMIS-compliant content repositories from JRuby. The examples has been written to work with Alfresco Community Edition 4.2.c which is one of the most feature complete CMIS content repository. If you want to test the code snippets below you have to download and install Alfresco. You can find the version that fits your platform here: http://wiki.alfresco.com/wiki/Download_and_Install_Alfresco
+This guide is for JRuby developers who want to access CMIS-compliant content repositories from JRuby. The examples has been written to work with Alfresco Community Edition 4.2.c which is one of the most feature complete CMIS content repository.
+
+If you want to run the code snippets below you can download and install Alfresco. You can find the version that fits your platform here: http://wiki.alfresco.com/wiki/Download_and_Install_Alfresco
+
+You can also run the code snippets using the Public Alfresco CMIS server. More information can be found here: http://cmis.alfresco.com. The atom url for the public 
+server is http://cmis.alfresco.com/cmisatom.
 
 ## Connecting to a CMIS repository
 
@@ -147,7 +152,7 @@ end
 
 ### Getting a property explicitly
 
-Each object type has a known set of properties, and you can retrieve these explicitly. For example, the document type has a set of properties described by the DocumentProperties interface (http://chemistry.apache.org/java/0.8.0/maven/apidocs/org/apache/chemistry/opencmis/client/api/DocumentProperties.html), and you can use the methods on this interface to retrieve the value a property.
+Each object type has a known set of properties, and you can retrieve these explicitly. For example, the document type has a set of properties described by the [DocumentProperties](http://chemistry.apache.org/java/0.8.0/maven/apidocs/org/apache/chemistry/opencmis/client/api/DocumentProperties.html) interface, and you can use the methods on this interface to retrieve the value a property.
 
 ```ruby
 # For root folder
@@ -173,6 +178,14 @@ q.each do |result|
   puts result.property_value_by_query_name("cmis:name").inspect
 end
 ```
+
+## TODO: Multi-filing and Unfiling examples
+## TODO: Relationships examples
+## TODO: Access control examples
+## TODO: OperationContext examples
+## TODO: Advanced types usage examples
+## TODO: Performance notes
+## TODO: Troubleshooting notes
 
 ## Contributing
 
