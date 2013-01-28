@@ -27,7 +27,7 @@ This guide is for JRuby developers who want to access CMIS-compliant content rep
 To be able to do anything useful on a CMIS repository, you must first find a repository, and create a session with it:
 
 ```ruby
-
+require 'cmis'
 atom_url = "http://localhost:8080/alfresco/service/cmis"
 user = "admin"
 password = "admin"
