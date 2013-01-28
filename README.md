@@ -15,6 +15,7 @@ Here are a few CMIS-compliant content repositories:
 * [EMC Documentum](http://www.emc.com/domains/documentum/index.htm)
 * [Sharepoint](http://sharepoint.microsoft.com/en-us/Pages/default.aspx)
 * [IBM FileNet Content Manager](http://www-01.ibm.com/software/data/content-management/filenet-content-manager/)
+* [KnowledgeTree](https://www.knowledgetree.com/)
 
 ## Installation
 
