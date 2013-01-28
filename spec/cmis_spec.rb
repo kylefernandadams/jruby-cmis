@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe "CMIS" do
   shared_examples_for "a CMIS repository" do |atom_url, user, password|
+    
     before(:all) do
       @atom_url = atom_url
       @user = user
@@ -103,6 +104,14 @@ describe "CMIS" do
           r.mime_type.should_not be_empty
         end
       end
+
+      it "should be possible to download document", focus: true do
+        doc = create_random_doc(@test_folder)
+        file = Dir.tmpdir + doc.name
+        doc.download(file)
+        File.exists?(file).should == true
+        File.delete(file)
+      end
     end
 
     describe "Writing objects" do
@@ -139,6 +148,17 @@ describe "CMIS" do
 
         doc.properties.each do |p|
           p.value.should == 16 if p.definition.id == "cmis:contentStreamLength"
+        end
+      end
+
+      it "should create document by specifying a string as content" do
+        content = "Please, save me!"
+        file_name = random_name + ".txt"
+        id = @test_folder.create_text_doc(file_name, content)
+        doc = @session.get_object(id)
+
+        doc.properties.each do |p|
+          p.value.should == content.size if p.definition.id == "cmis:contentStreamLength"
         end
       end
     end
@@ -238,12 +258,20 @@ describe "CMIS" do
     end
   end
 
+  describe "Local Alfresco" do
+    atom_url = "http://localhost:8181/alfresco/service/cmis"
+    user = "admin"
+    password = "admin"
+
+    it_behaves_like "a CMIS repository", atom_url, user, password
+  end
+
   describe "Alfresco" do
     atom_url = "http://cmis.alfresco.com/cmisatom"
     user = "admin"
     password = "admin"
     
-    it_behaves_like "a CMIS repository", atom_url, user, password
+    #it_behaves_like "a CMIS repository", atom_url, user, password
   end
 
   describe "Nuxeo" do
@@ -251,6 +279,6 @@ describe "CMIS" do
     user = "Administrator"
     password = "Administrator"
     
-    it_behaves_like "a CMIS repository", atom_url, user, password
+    #it_behaves_like "a CMIS repository", atom_url, user, password
   end
 end

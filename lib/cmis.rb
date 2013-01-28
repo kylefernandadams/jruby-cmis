@@ -11,6 +11,7 @@ module CMIS
   import org.apache.chemistry.opencmis.client.api.Session
   import org.apache.chemistry.opencmis.client.api.SessionFactory
   import org.apache.chemistry.opencmis.client.api.OperationContext
+  import org.apache.chemistry.opencmis.client.util.FileUtils
   import org.apache.chemistry.opencmis.client.runtime.OperationContextImpl
   import org.apache.chemistry.opencmis.client.runtime.SessionFactoryImpl
   import org.apache.chemistry.opencmis.commons.SessionParameter
@@ -42,6 +43,13 @@ module CMIS
   import org.apache.chemistry.opencmis.commons.enums.Updatability
 
   FolderImpl = org.apache.chemistry.opencmis.client.runtime.FolderImpl
+  DocumentImpl = org.apache.chemistry.opencmis.client.runtime.DocumentImpl
+  
+  class DocumentImpl
+    def download(destination_path)
+      FileUtils.download(self, destination_path)
+    end
+  end
   
   class FolderImpl
     def create_cmis_folder(name, props = nil)
@@ -59,6 +67,10 @@ module CMIS
         doc_props.merge!(props) if props != nil && props.is_a?(Hash)
         self.create_document(doc_props, content, CMIS::VersioningState::MAJOR)
       end
+    end
+
+    def create_text_doc(name, content)
+      FileUtils.create_text_document(self.id, name, content, "cmis:document", CMIS::VersioningState::MAJOR, session)
     end
   end
 
@@ -99,19 +111,5 @@ module CMIS
     end
 
     content
-  end
-
-  def self.content_as_string(stream)
-    sb = java.lang.StringBuilder.new
-    br = java.io.BufferedReader.new(java.io.InputStreamReader.new(stream.stream, "UTF-8"))
-    line = br.read_line
-    
-    while line != nil do
-      line = br.read_line
-      sb.append(line)
-    end
-
-    br.close
-    sb.to_s
   end
 end

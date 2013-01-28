@@ -1,5 +1,5 @@
 require 'cmis'
-
+require 'tmpdir'
 def file_path( *paths )
   File.expand_path(File.join(File.dirname(__FILE__), 'fixtures', *paths))
 end
@@ -7,6 +7,14 @@ end
 
 def random_name
   rand(16**16).to_s(16)
+end
+
+def create_random_doc(parent)
+  file = file_path("text_file.txt")
+  file_name = random_name + ".txt"
+  id = parent.create_cmis_document(file_name, file)
+  
+  parent.session.get_object(id)    
 end
 
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
