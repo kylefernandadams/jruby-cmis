@@ -223,11 +223,15 @@ A complete list of actions can be found here: http://chemistry.apache.org/java/0
 ## Working with CMIS Queries
 
 ```ruby
-query = "SELECT * FROM cmis:document WHERE cmis:name LIKE 'cmis%'"
+query = "SELECT * FROM cmis:folder"
 q = @session.query(query, false) # false means only latest versions
 
 q.each do |result|
-  puts result.property_value_by_query_name("cmis:name")
+  props = result.properties
+  props.each do |p|
+    disp_name = p.display_name
+    puts "Name: " + p.first_value if disp_name == "Name"
+  end
 end
 ```
 
