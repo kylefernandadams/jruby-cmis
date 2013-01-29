@@ -283,7 +283,7 @@ describe "CMIS" do
 
     describe "Relationships" do
 
-      it "should be possible to create relationships", focus: true do
+      it "should be possible to create relationships" do
         content_stream = CMIS::create_content_stream(file_path("text_file.txt"), @session)
         source_props = { CMIS::PropertyIds::OBJECT_TYPE_ID => "D:cmiscustom:document", CMIS::PropertyIds::NAME => "source.txt" }
         source_doc = @test_folder.create_document(source_props, content_stream, CMIS::VersioningState::MAJOR)
@@ -310,7 +310,7 @@ describe "CMIS" do
     user = "admin"
     password = "admin"
 
-    it_behaves_like "a CMIS repository", atom_url, user, password
+    #it_behaves_like "a CMIS repository", atom_url, user, password
   end
 
   describe "Alfresco" do
@@ -318,7 +318,7 @@ describe "CMIS" do
     user = "admin"
     password = "admin"
     
-    #it_behaves_like "a CMIS repository", atom_url, user, password
+    it_behaves_like "a CMIS repository", atom_url, user, password
   end
 
   describe "Nuxeo" do
@@ -326,6 +326,6 @@ describe "CMIS" do
     user = "Administrator"
     password = "Administrator"
     
-    #it_behaves_like "a CMIS repository", atom_url, user, password
+    it_behaves_like "a CMIS repository", atom_url, user, password
   end
 end
