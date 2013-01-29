@@ -317,6 +317,10 @@ renditions.each do |r|
 end
 ```
 
+Note: If you run the code above you might not get the renditions directly. Many repositories renders them asynchronously so it will take some time before you see them.
+
+
+
 ## DOCUMENTION TODO:
 * Add Multi-filing and Unfiling examples
 * Add Relationships examples
