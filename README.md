@@ -218,6 +218,8 @@ allowed_actions.each do |a|
 end
 ```
 
+**Note: ** A complete list of actions can be found here: http://chemistry.apache.org/java/0.8.0/maven/apidocs/org/apache/chemistry/opencmis/commons/enums/Action.html
+
 ## Working with CMIS Queries
 
 ```ruby
