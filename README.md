@@ -207,6 +207,17 @@ puts "Content stream file name: " + doc.content_stream_file_name
 puts "Content stream mime type: " + doc.content_stream_mime_type
 ```
 
+Get allowed actions for a document or folder:
+
+```ruby
+root = @session.root_folder
+allowed_actions = root.allowed_actions
+
+allowed_actions.each do |a|
+  puts a.to_s + " is an allowed action on " + root.name
+end
+```
+
 ## Working with CMIS Queries
 
 ```ruby
