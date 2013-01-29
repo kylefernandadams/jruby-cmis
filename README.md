@@ -123,6 +123,8 @@ doc.download(file)
 
 ### Updating a document
 
+Updating metadata:
+
 ```ruby
 id = root.create_cmis_document("cmis_logo_original.png", "/Users/ricn/cmis_logo.png")
 doc = @session.get_object(id)
@@ -132,6 +134,27 @@ id = doc.update_properties(props)
 doc = @session.get_object(id)
 puts "New name: #{doc.name}"
 ```
+
+Updating the actual content of a document (using check out / check in):
+```ruby
+root = @session.root_folder
+doc = root.create_text_doc("my_file.txt", "content")
+puts "Orginal version: " + doc.version_label
+id = doc.check_out
+working_copy = @session.get_object(id)
+
+content_stream = CMIS::create_content_stream("/Users/ricn/updated_file.txt", @session)
+
+# check_in arguments: boolean major, properties, contentStream, checkinComment
+id = working_copy.check_in(false, nil, content_stream, "minor version")
+doc = @session.get_object(id)
+
+puts "New version: " + doc.version_label
+```
+
+Update the content of a document directly:
+
+TODO
 
 ### Deleting a document
 
