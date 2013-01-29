@@ -17,6 +17,7 @@ module CMIS
   import org.apache.chemistry.opencmis.commons.SessionParameter
   import org.apache.chemistry.opencmis.commons.PropertyIds
   import org.apache.chemistry.opencmis.commons.impl.MimeTypes
+  import org.apache.chemistry.opencmis.commons.data.AclCapabilities
   
   import org.apache.chemistry.opencmis.commons.enums.Action
   import org.apache.chemistry.opencmis.commons.enums.BaseTypeId
