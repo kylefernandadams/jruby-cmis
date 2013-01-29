@@ -455,7 +455,7 @@ puts rel.target.id
 ## Exceptions
 If something goes wrong in an OpenCMIS method, an exception will be thrown. All OpenCMIS exceptions extend [CmisBaseException](http://chemistry.apache.org/java/0.8.0/maven/apidocs/org/apache/chemistry/opencmis/commons/exceptions/package-tree.html) which is a Java runtime exception. Because all exceptions are runtime, you do not have to catch or specify the exceptions in your own code.
 
-When you are using the ATOMPUB binding, [CmisBaseException](http://chemistry.apache.org/java/0.8.0/maven/apidocs/org/apache/chemistry/opencmis/commons/exceptions/package-tree.html) provides a error_content method which returns the content of the error page returned from the server, if there is one. This can be very useful debugging, as the server side is normally able to provide far more information that the client. 
+When you are using the ATOMPUB binding, [CmisBaseException](http://chemistry.apache.org/java/0.8.0/maven/apidocs/org/apache/chemistry/opencmis/commons/exceptions/package-tree.html) provides a error_content method which returns the content of the error page returned from the server, if there is one. This can be very useful when debugging, as the server side is normally able to provide far more information that the client. 
 In the following example, a CMISInvalidArgumentException exception is forced by trying to create a folder with an invalid type. The rescue block prints the server's error page:
 
 ```ruby
