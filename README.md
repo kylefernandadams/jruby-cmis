@@ -323,10 +323,20 @@ end
 
 Note: If you run the code above you might not get the renditions directly. Many repositories renders them asynchronously so it will take some time before you see them.
 
+## Multi-filing
+Multi-filing allows you to file a document object in more than one folder. This capability are optional, and your repository may not support them.
 
+The following code snippet checks if multi-filing is supported by this repository. If it is, creates a second folder in the root folder, and then adds our document to the new folder. Since multi-filing is supported, the document should be seen in both folders, and the code checks for this.
+
+```ruby
+doc = @session.root_folder.create_text_doc("Multi-filing.txt", "Content")
+folder = @session.root_folder.create_cmis_folder("multi-filing")
+puts "Document parent count: " + doc.parents.size.to_s
+doc.add_to_folder(folder, true) # true means all versions
+puts "Document parent count: " + doc.parents.size.to_s
+```
 
 ## DOCUMENTION TODO:
-* Add Multi-filing and Unfiling examples
 * Add Relationships examples
 * Add Access control examples
 * Add OperationContext examples
