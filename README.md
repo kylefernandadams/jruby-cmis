@@ -332,6 +332,40 @@ doc.add_to_folder(folder, true) # true means all versions
 puts "Document parent count: " + doc.parents.size.to_s
 ```
 
+## Access control
+```ruby
+Document or folder objects can have an access control list (ACL), which controls access to the object. An ACL is a list of Access Control Entries (ACEs). An ACE grants one or more permissions to a principal. A principal is a user, group, role, or something similar.
+
+An ACE contains:
+* One String with the principalid
+* One or more Strings with the names of the permissions.
+* A boolean flag direct, which is true if the ACE is directly assigned to the object, or false if the ACE is somehow derived
+
+There are three basic permissions predefined by CMIS:
+* cmis:read: permission for reading properties and reading content
+* cmis:write: permission to write properties and the content of an object. A respository can defin the property to include cmis:read
+* cmis:all: all the permissions of a repository. It includes all other basic CMIS permissions.
+
+How these basic permissions are mapped to allowable actions is repository specific. You can discover the repository semantics for basic permissions with regard to allowable actions by examining the mappings parameter returned by session method repository_info. A repository can extend the basic permissions with its own repository-specific permissions. The folowing code snippet prints out the permissions available for a repository, and the mappings of allowable actions to repository permissions:-
+
+```ruby
+acl_caps = @session.repository_info.acl_capabilities
+
+puts "Propogation for this repository is " + acl_caps.acl_propagation.to_s
+
+puts "Permissions for this repository are: "
+acl_caps.permissions.each do |p|
+  puts "ID: " + p.id + " description: " + p.description 
+end
+
+puts "Permission mappings for this repository are:"
+repo_mapping = acl_caps.permission_mapping
+
+repo_mapping.each do |key, value|
+  puts key + " maps to " + repo_mapping.get(key).permissions.to_s
+end
+```
+
 ## DOCUMENTION TODO:
 * Add Relationships examples
 * Add Access control examples
