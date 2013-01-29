@@ -42,6 +42,8 @@ server is http://cmis.alfresco.com/cmisatom.
 
 Nuxeo also provides a demo server. More information can be found here: http://doc.nuxeo.com/display/NXDOC/CMIS+for+Nuxeo#CMISforNuxeo-Onlinedemo .
 
+The documentation below is heavily based on the [OpenCMIS Client API Developer's Guide](http://chemistry.apache.org/java/developing/guide.html)
+
 ## Connecting to a CMIS repository
 
 To be able to do anything useful on a CMIS repository, you must first find a repository, and create a session with it:
