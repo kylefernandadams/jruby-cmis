@@ -291,9 +291,33 @@ page2.each do |o|
 end
 ```
 
+## Renditions
+
+Some repositories provide a facility to retrieve alternative representations, or renditions of a document. An example is a preview thumbnail image of the content of a document, which could be presented to the user without needing to download the full document content. Another example is a PDF version of a word document.
+
+A CMIS repository may have zero or more renditions for a document or folder in addition to the document's content stream.
+At present the CMIS specification only allows renditions to be read. There are no facilities to create, update or delete renditions. Renditions are of a specific version of the document and may differ between document versions. Each rendition consists of a set of rendition attributes and a rendition stream. Rendition attributes are not object properties, and are not queryable. Renditions can be retrieved using the getRenditions service.
+
+The following code example checks if this repository supports renditions. It then scans the object tree starting from the root folder for a document object that has renditions associated with it. It then gets the document again using an OperationContext to retrieve all renditions of a particular type.
+
+```ruby
+puts "Rendition support: " + @session.repository_info.capabilities.renditions_capability.to_s
+
+id = @session.root_folder.create_text_doc("simple file.txt", "My content")
+context = @session.create_operation_context
+context.rendition_filter_string = "cmis:thumbnail"
+doc = @session.get_object(id, context)
+
+renditions = doc.renditions
+
+puts "Renditions"
+renditions.each do |r|
+  puts "Kind" + r.kind
+  puts "Mimetype: " + r.mime_type
+end
+```
+
 ## DOCUMENTION TODO:
-* Add allowable actions examples
-* Add renditions examples
 * Add Multi-filing and Unfiling examples
 * Add Relationships examples
 * Add Access control examples
