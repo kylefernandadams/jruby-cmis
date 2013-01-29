@@ -436,9 +436,6 @@ puts rel.source.id
 puts rel.target.id
 ```
 
-## DOCUMENTION TODO:
-* Add CMIS Types examples
-
 ## Contributing
 
 1. Fork it
