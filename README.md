@@ -333,7 +333,7 @@ puts "Document parent count: " + doc.parents.size.to_s
 ```
 
 ## Access control
-```ruby
+
 Document or folder objects can have an access control list (ACL), which controls access to the object. An ACL is a list of Access Control Entries (ACEs). An ACE grants one or more permissions to a principal. A principal is a user, group, role, or something similar.
 
 An ACE contains:
