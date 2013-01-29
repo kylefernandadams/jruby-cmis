@@ -371,7 +371,7 @@ You can specify how a repository should handle non-direct ACEs when you create a
 
 * OBJECTONLY: apply ACEs to a document or folder, without changing the ACLs of other objects
 * PROPAGATE: apply ACEs to the given object and all inheriting objects
-* REPOSITORYDETERMINED: allow the repositoryto use its own method of computing how changing an ACL for an object influences the non-direct ACEs of other objects.
+* REPOSITORYDETERMINED: allow the repository to use its own method of computing how changing an ACL for an object influences the non-direct ACEs of other objects.
 
 The following example creates a folder object, and prints out the ACEs in the created folder's ACL. It then creates a new ACL with one ACE, adds it to the folder, retrieves the folder again, and prints out the ACEs now present in the folder's ACL:
 
@@ -406,13 +406,38 @@ aces.each do |a|
 end
 ```
 
+## Relationships
+
+A Relationship object is a relationship between a source object and a target object. The relationship has direction, from source to target. It is non-invasive, in that a relationship does not modify either the source or the target object. A relationship object has a type, like any other CMIS object. The source and target objects must be independent objects, such as a document, folder, or policy objects. A relationship object does not have a content-stream, and is not versionable, queryable, or fileable.
+
+A repository does not have to support relationships. If it doesn't the relationship base object-type will not be returned by a "get types" call.
+
+The following example creates a relationship between 2 objects. Alfresco supports relationships, but the base type cmis:relationship is not defined as creatable, so the example uses an existing type R:cmiscustom:assoc which is a creatable sub-type of cmis:relationship in Alfresco:
+
+```ruby
+content_stream = CMIS::create_content_stream("/Users/ricn/source.txt", @session)
+source_props = { CMIS::PropertyIds::OBJECT_TYPE_ID => "D:cmiscustom:document", CMIS::PropertyIds::NAME => "source.txt" }
+source_doc = @session.root_folder.create_document(source_props, content_stream, CMIS::VersioningState::MAJOR)
+
+content_stream = CMIS::create_content_stream("/Users/ricn/target.txt", @session)
+target_props = { CMIS::PropertyIds::OBJECT_TYPE_ID => "D:cmiscustom:document", CMIS::PropertyIds::NAME => "target.txt" }
+target_doc = @session.root_folder.create_document(target_props, content_stream, CMIS::VersioningState::MAJOR)
+        
+rel_props = {
+  "cmis:sourceId" => source_doc.id, 
+  "cmis:targetId" => target_doc.id, 
+  "cmis:objectTypeId" => "R:cmiscustom:assoc"
+}
+
+rel = @session.create_relationship(rel_props)
+rel = @session.get_object(rel)
+
+puts rel.source.id
+puts rel.target.id
+```
+
 ## DOCUMENTION TODO:
-* Add Relationships examples
-* Add Access control examples
-* Add OperationContext examples
-* Add Advanced types usage examples
-* Add Performance notes
-* Add Troubleshooting notes
+* Add CMIS Types examples
 
 ## Contributing
 
