@@ -101,7 +101,11 @@ Create a folder the hard way:
 ```ruby
 folder_props = { CMIS::PropertyIds::OBJECT_TYPE_ID => "cmis:folder", CMIS::PropertyIds::NAME => "Another folder" }
 root.create_folder(folder_props)
+puts folder.name
 ```
+
+Note: When you create a folder it will return an actual Java OpenCMIS Folder object. That means you have access to everything it provides. The JavaDoc can be found here:
+http://chemistry.apache.org/java/0.8.0/maven/apidocs/org/apache/chemistry/opencmis/client/api/Folder.html
 
 ### Creating/Uploading documents
 
@@ -121,7 +125,10 @@ content_stream = CMIS::create_content_stream("/Users/ricn/cmis_logo.png", @sessi
 props = { CMIS::PropertyIds::OBJECT_TYPE_ID => "cmis:document", CMIS::PropertyIds::NAME => "cmis_logo.png" }
 id = root.create_document(props, content_stream, CMIS::VersioningState::MAJOR)
 doc = @session.get_object(id)
+puts doc.name
 ```
+
+Note: When you create a docuemtn it will return an actual Java OpenCMIS Document object. That means you have access to everything it provides. The JavaDoc can be found here: http://chemistry.apache.org/java/0.8.0/maven/apidocs/org/apache/chemistry/opencmis/client/api/Document.html
 
 #### Download a document to your local disc
 
