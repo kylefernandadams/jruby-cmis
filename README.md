@@ -31,6 +31,12 @@ Or install it yourself as:
 
     $ gem install cmis
 
+
+## Notes about JRuby and OpenCMIS
+Every call you do in this library that returns an object actually returns a real Java object from OpenCMIS so you have access to all the functionality that OpenCMIS provides.
+
+If you want to do something that is not described in the documentation below you can read the [OpenCMIS JavaDoc](http://chemistry.apache.org/java/0.8.0/maven/apidocs/) and you can figure out how to it.
+
 ## Usage
 
 This guide is for JRuby developers who want to access CMIS-compliant content repositories from JRuby. The examples has been tested with Alfresco Community Edition 4.2.c which is one of the most feature complete CMIS content repository.
@@ -65,6 +71,8 @@ puts "Trying to connect to a repository with id #{available_repos[0].id}"
 @session = CMIS::create_session(atom_url, user, password, available_repos[0].id)
 
 ```
+
+Note: The create_session method returns a real [Session](http://chemistry.apache.org/java/0.8.0/maven/apidocs/org/apache/chemistry/opencmis/client/api/Session.html) object that is used in OpenCMIS so you have access to every functionality that the Session object provides.
 
 ## Working with folders and documents
 
