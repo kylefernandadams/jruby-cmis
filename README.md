@@ -346,7 +346,8 @@ There are three basic permissions predefined by CMIS:
 * cmis:write: permission to write properties and the content of an object. A respository can defin the property to include cmis:read
 * cmis:all: all the permissions of a repository. It includes all other basic CMIS permissions.
 
-How these basic permissions are mapped to allowable actions is repository specific. You can discover the repository semantics for basic permissions with regard to allowable actions by examining the mappings parameter returned by session method repository_info. A repository can extend the basic permissions with its own repository-specific permissions. The folowing code snippet prints out the permissions available for a repository, and the mappings of allowable actions to repository permissions:-
+How these basic permissions are mapped to allowable actions is repository specific. You can discover the repository semantics for basic permissions with regard to allowable actions by examining the mappings parameter returned by session method repository_info. A repository can extend the basic permissions with its own repository-specific permissions. The folowing code snippet prints out the permissions available for a repository, 
+and the mappings of allowable actions to repository permissions:
 
 ```ruby
 acl_caps = @session.repository_info.acl_capabilities
@@ -363,6 +364,45 @@ repo_mapping = acl_caps.permission_mapping
 
 repo_mapping.each do |key, value|
   puts key + " maps to " + repo_mapping.get(key).permissions.to_s
+end
+```
+
+You can specify how a repository should handle non-direct ACEs when you create an ACL, by specifying one of the following acl propogation values:
+
+* OBJECTONLY: apply ACEs to a document or folder, without changing the ACLs of other objects
+* PROPAGATE: apply ACEs to the given object and all inheriting objects
+* REPOSITORYDETERMINED: allow the repositoryto use its own method of computing how changing an ACL for an object influences the non-direct ACEs of other objects.
+
+The following example creates a folder object, and prints out the ACEs in the created folder's ACL. It then creates a new ACL with one ACE, adds it to the folder, retrieves the folder again, and prints out the ACEs now present in the folder's ACL:
+
+```ruby
+folder = @session.root_folder.create_cmis_folder("ACL test")
+oc = CMIS::OperationContextImpl.new
+oc.include_acls = true 
+folder = @session.get_object(folder, oc)
+
+aces = folder.acl.aces
+puts "Permissions before we add the guest user:"
+aces.each do |a|
+  puts "Principal: " + a.principal.id
+  a.permissions.each do |p|
+    puts "Permission ID: " + p
+  end
+end
+
+permissions = ["cmis:read"]
+principal = "guest" # Built in user in Alfresco
+ace_in = @session.object_factory.create_ace(principal, permissions)
+folder.add_acl([ace_in], CMIS::AclPropagation::REPOSITORYDETERMINED)
+folder = @session.get_object(folder, oc)
+
+aces = aces = folder.acl.aces
+puts "Permissions after we added the guest user:"
+aces.each do |a|
+  puts "Principal: " + a.principal.id
+  a.permissions.each do |p|
+    puts "Permission ID: " + p
+  end
 end
 ```
 
