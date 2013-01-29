@@ -267,8 +267,31 @@ puts "ACL Capabilities"
 puts "ACL: " + cap.acl_capability.value
 ```
 
+## Paging
+When you retrieve the children of a CMIS object, the result set returned is of an arbitrary size. Retrieving a large result set synchronously could increase response times. To improve performance, you can use OpenCMIS's paging support to control the size of the result set retrieved from the repository. To use paging, 
+you must specify an [OperationContext](http://chemistry.apache.org/java/0.8.0/maven/apidocs/org/apache/chemistry/opencmis/client/api/OperationContext.html) when invoking children method call on the parent object. The OperationContext specifies the maximum number of items to retrieve in a page.
+
+```ruby
+root = @session.root_folder
+oc = CMIS::OperationContextImpl.new
+oc.max_items_per_page = 3
+
+# List all object in the root folder using paging
+page1 = root.children(oc).skip_to(0).page.map(&:name)
+page2 = root.children(oc).skip_to(1).page.map(&:name)
+
+puts "Page 1:"
+page1.each do |o|
+  puts o
+end
+
+puts "Page 2:"
+page2.each do |o|
+  puts o
+end
+```
+
 ## DOCUMENTION TODO:
-* Add paging examples
 * Add allowable actions examples
 * Add renditions examples
 * Add Multi-filing and Unfiling examples
