@@ -218,13 +218,13 @@ allowed_actions.each do |a|
 end
 ```
 
-**Note: ** A complete list of actions can be found here: http://chemistry.apache.org/java/0.8.0/maven/apidocs/org/apache/chemistry/opencmis/commons/enums/Action.html
+A complete list of actions can be found here: http://chemistry.apache.org/java/0.8.0/maven/apidocs/org/apache/chemistry/opencmis/commons/enums/Action.html
 
 ## Working with CMIS Queries
 
 ```ruby
 query = "SELECT * FROM cmis:document WHERE cmis:name LIKE 'cmis%'"
-q = @session.query(query, false) # true means search all versions
+q = @session.query(query, false) # false means only latest versions
 
 q.each do |result|
   puts result.property_value_by_query_name("cmis:name")
