@@ -104,7 +104,7 @@ root.create_folder(folder_props)
 puts folder.name
 ```
 
-Note: When you create a folder it will return an actual Java OpenCMIS Folder object. That means you have access to everything it provides. [More information can be found in the JavaDoc for Folder interface](http://chemistry.apache.org/java/0.8.0/maven/apidocs/org/apache/chemistry/opencmis/client/api/Folder.html)
+Note: When you create a folder it will return an actual Java OpenCMIS Folder object. That means you have access to everything it provides. [More information can be found in the JavaDoc for the Folder interface](http://chemistry.apache.org/java/0.8.0/maven/apidocs/org/apache/chemistry/opencmis/client/api/Folder.html)
 
 ### Creating/Uploading documents
 
