@@ -280,6 +280,29 @@ describe "CMIS" do
         folder.acl.aces.size.should == original_acl_size + 2
       end
     end
+
+    describe "Relationships" do
+
+      it "should be possible to create relationships", focus: true do
+        content_stream = CMIS::create_content_stream(file_path("text_file.txt"), @session)
+        source_props = { CMIS::PropertyIds::OBJECT_TYPE_ID => "D:cmiscustom:document", CMIS::PropertyIds::NAME => "source.txt" }
+        source_doc = @test_folder.create_document(source_props, content_stream, CMIS::VersioningState::MAJOR)
+        
+        target_props = { CMIS::PropertyIds::OBJECT_TYPE_ID => "D:cmiscustom:document", CMIS::PropertyIds::NAME => "target.txt" }
+        target_doc = @test_folder.create_document(target_props, content_stream, CMIS::VersioningState::MAJOR)
+        
+        rel_props = {
+          "cmis:sourceId" => source_doc.id, 
+          "cmis:targetId" => target_doc.id, 
+          "cmis:objectTypeId" => "R:cmiscustom:assoc"
+        }
+
+        rel = @session.create_relationship(rel_props)
+        rel = @session.get_object(rel)
+        rel.source.id.should == source_doc.id
+        rel.target.id.should == target_doc.id
+      end   
+    end
   end
 
   describe "Local Alfresco" do
