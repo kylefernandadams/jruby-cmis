@@ -302,8 +302,6 @@ Some repositories provide a facility to retrieve alternative representations, or
 A CMIS repository may have zero or more renditions for a document or folder in addition to the document's content stream.
 At present the CMIS specification only allows renditions to be read. There are no facilities to create, update or delete renditions. Renditions are of a specific version of the document and may differ between document versions. Each rendition consists of a set of rendition attributes and a rendition stream. Rendition attributes are not object properties, and are not queryable. Renditions can be retrieved using the getRenditions service.
 
-The following code example checks if this repository supports renditions. It then scans the object tree starting from the root folder for a document object that has renditions associated with it. It then gets the document again using an OperationContext to retrieve all renditions of a particular type.
-
 ```ruby
 puts "Rendition support: " + @session.repository_info.capabilities.renditions_capability.to_s
 
@@ -325,8 +323,6 @@ Note: If you run the code above you might not get the renditions directly. Many 
 
 ## Multi-filing
 Multi-filing allows you to file a document object in more than one folder. This capability are optional, and your repository may not support them.
-
-The following code snippet checks if multi-filing is supported by this repository. If it is, creates a second folder in the root folder, and then adds our document to the new folder. Since multi-filing is supported, the document should be seen in both folders, and the code checks for this.
 
 ```ruby
 doc = @session.root_folder.create_text_doc("Multi-filing.txt", "Content")
