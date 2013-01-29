@@ -194,9 +194,44 @@ q.each do |result|
 end
 ```
 
+## Capabilities
+CMIS repositories has different capabilities. Some are designed for a specific application domain and do not provide capabilities that are not needed for that domain. This means a repository implementation may not be able to support all the capabilities that the CMIS specification provides. To allow this, some capabilities can be optionally supported by a CMIS repository.
+
+This is how you check the capabilites of the repository:
+
+```ruby
+rep_info = @session.repository_info
+cap = rep_info.capabilities
+
+puts "Navigation Capabilities"
+puts "Get descendants supported: " + cap.is_get_descendants_supported.to_s
+puts "Get folder tree supported: " + cap.is_get_folder_tree_supported.to_s
+puts "=============================="
+puts "Object Capabilities"
+puts "Content Stream: " + cap.content_stream_updates_capability.value
+puts "Changes: " + cap.changes_capability.value
+puts "Renditions: " + cap.renditions_capability.value 
+puts "=============================="
+puts "Filing Capabilities"
+puts "Multifiling supported: " + cap.is_multifiling_supported.to_s
+puts "Unfiling supported: " + cap.is_unfiling_supported.to_s
+puts "Version specific filing supported: " + cap.is_version_specific_filing_supported.to_s
+puts "=============================="
+puts "Versioning Capabilities"
+puts "PWC searchable: " + cap.is_pwc_searchable_supported.to_s
+puts "PWC updatable: " + cap.is_pwc_updatable_supported.to_s
+puts "All versions searchable: " + cap.is_all_versions_searchable_supported.to_s
+puts "=============================="
+puts "Query Capabilities"
+puts "Query: " + cap.query_capability.value
+puts "Join: " + cap.join_capability.value
+puts "=============================="
+puts "ACL Capabilities"
+puts "ACL: " + cap.acl_capability.value
+```
+
 ## DOCUMENTION TODO:
 * Add paging examples
-* Add Capabilities examples
 * Add allowable actions examples
 * Add versioning examples
 * Add renditions examples
