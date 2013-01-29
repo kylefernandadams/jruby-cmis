@@ -123,7 +123,7 @@ id = root.create_document(props, content_stream, CMIS::VersioningState::MAJOR)
 doc = @session.get_object(id)
 ```
 
-#### Download a document to your local disk
+#### Download a document to your local disc
 
 ```ruby
 doc = @session.get_object(id)
