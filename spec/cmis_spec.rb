@@ -79,7 +79,7 @@ describe "CMIS" do
         allowed_actions.to_a.should include(CMIS::Action::CAN_GET_PROPERTIES)
       end
 
-      it "should retrieve allowed actions for an object using convenient method", focus: true do
+      it "should retrieve allowed actions for an object using convenient method" do
         # for a folder
         allowed_actions = @session.root_folder.allowed_actions
         allowed_actions.should include(CMIS::Action::CAN_GET_PROPERTIES)
@@ -167,6 +167,13 @@ describe "CMIS" do
         doc.properties.each do |p|
           p.value.should == content.size if p.definition.id == "cmis:contentStreamLength"
         end
+      end
+
+      it "should be possible to use multi-filing" do
+        doc = create_random_doc(@test_folder)
+        folder = @test_folder.create_cmis_folder("multi-filing")
+        doc.add_to_folder(folder, true) # true means all versions
+        doc.parents.size.should == 2
       end
     end
 
