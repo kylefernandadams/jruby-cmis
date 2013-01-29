@@ -35,7 +35,7 @@ Or install it yourself as:
 ## Notes about JRuby and OpenCMIS
 Every call you do in this library that returns an object actually returns a real Java object from OpenCMIS so you have access to all the functionality that OpenCMIS provides.
 
-If you want to do something that is not described in the documentation below you can read the [OpenCMIS JavaDoc](http://chemistry.apache.org/java/0.8.0/maven/apidocs/) and you can figure out how to it.
+If you want to do something that is not described in the documentation below you can read the [OpenCMIS JavaDoc](http://chemistry.apache.org/java/0.8.0/maven/apidocs/) and you should figure out how to do it.
 
 ## Usage
 
