@@ -145,7 +145,7 @@ working_copy = @session.get_object(id)
 
 content_stream = CMIS::create_content_stream("/Users/ricn/updated_file.txt", @session)
 
-# check_in arguments: boolean major, properties, contentStream, checkinComment
+# check_in parameters: boolean major, properties, contentStream, checkinComment
 id = working_copy.check_in(false, nil, content_stream, "minor version")
 doc = @session.get_object(id)
 
@@ -170,8 +170,9 @@ doc.delete # Yay, that was easy!
 folder1 = root.create_cmis_folder("folder1")
 folder11 = folder1.create_cmis_folder("Folder11")
 folder12 = folder1.create_cmis_folder("Folder12")
-# Delete it
-folder1.delete_tree(true, CMIS::UnfileObject::DELETE, true) # parameter explanation: boolean allversions, UnfileObject unfile, boolean continueOnFailure
+
+# Parameter: boolean allversions, UnfileObject unfile, boolean continueOnFailure
+folder1.delete_tree(true, CMIS::UnfileObject::DELETE, true)
 ```
 
 ## Working with CMIS Properties
