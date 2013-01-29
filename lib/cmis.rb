@@ -49,6 +49,10 @@ module CMIS
     def download(destination_path)
       FileUtils.download(self, destination_path)
     end
+
+    def allowed_actions
+      self.allowable_actions.allowable_actions.to_a
+    end
   end
   
   class FolderImpl
@@ -71,6 +75,10 @@ module CMIS
 
     def create_text_doc(name, content)
       FileUtils.create_text_document(self.id, name, content, "cmis:document", CMIS::VersioningState::MAJOR, session)
+    end
+
+    def allowed_actions
+      self.allowable_actions.allowable_actions.to_a
     end
   end
 

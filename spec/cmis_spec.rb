@@ -79,6 +79,16 @@ describe "CMIS" do
         allowed_actions.to_a.should include(CMIS::Action::CAN_GET_PROPERTIES)
       end
 
+      it "should retrieve allowed actions for an object using convenient method", focus: true do
+        # for a folder
+        allowed_actions = @session.root_folder.allowed_actions
+        allowed_actions.should include(CMIS::Action::CAN_GET_PROPERTIES)
+
+        doc = create_random_doc(@test_folder)
+        allowed_actions = doc.allowed_actions
+        allowed_actions.should include(CMIS::Action::CAN_GET_PROPERTIES)
+      end
+
       it "should be possible to check if a document is versionable" do
         doc = create_random_doc(@test_folder)
         doc.type.is_versionable.should == true
@@ -253,7 +263,7 @@ describe "CMIS" do
     user = "admin"
     password = "admin"
 
-    #it_behaves_like "a CMIS repository", atom_url, user, password
+    it_behaves_like "a CMIS repository", atom_url, user, password
   end
 
   describe "Alfresco" do
@@ -261,7 +271,7 @@ describe "CMIS" do
     user = "admin"
     password = "admin"
     
-    it_behaves_like "a CMIS repository", atom_url, user, password
+    #it_behaves_like "a CMIS repository", atom_url, user, password
   end
 
   describe "Nuxeo" do
@@ -269,6 +279,6 @@ describe "CMIS" do
     user = "Administrator"
     password = "Administrator"
     
-    it_behaves_like "a CMIS repository", atom_url, user, password
+    #it_behaves_like "a CMIS repository", atom_url, user, password
   end
 end
