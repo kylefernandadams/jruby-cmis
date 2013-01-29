@@ -265,6 +265,10 @@ describe "CMIS" do
     end
   end
 
+  describe "Access control" do
+    
+  end
+
   describe "Local Alfresco" do
     atom_url = "http://localhost:8181/alfresco/service/cmis"
     user = "admin"
