@@ -263,10 +263,23 @@ describe "CMIS" do
         @sub_folder.children.map(&:name).size.should == 5
       end
     end
-  end
 
-  describe "Access control" do
-    
+    describe "Access control" do
+      it "should be possible to add acls to an object" do
+        folder = @test_folder.create_cmis_folder("ACL test")
+        oc = CMIS::OperationContextImpl.new
+        oc.include_acls = true 
+        folder = @session.get_object(folder, oc)
+        original_acl_size = folder.acl.aces.size
+        
+        permissions = ["cmis:read"]
+        principal = "guest"
+        ace_in = @session.object_factory.create_ace(principal, permissions)
+        folder.add_acl([ace_in], CMIS::AclPropagation::REPOSITORYDETERMINED)
+        folder = @session.get_object(folder, oc)
+        folder.acl.aces.size.should == original_acl_size + 2
+      end
+    end
   end
 
   describe "Local Alfresco" do

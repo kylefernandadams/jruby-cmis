@@ -20,6 +20,7 @@ module CMIS
   import org.apache.chemistry.opencmis.commons.data.AclCapabilities
   
   import org.apache.chemistry.opencmis.commons.enums.Action
+  import org.apache.chemistry.opencmis.commons.enums.AclPropagation
   import org.apache.chemistry.opencmis.commons.enums.BaseTypeId
   import org.apache.chemistry.opencmis.commons.enums.CapabilityAcl
   import org.apache.chemistry.opencmis.commons.enums.VersioningState
