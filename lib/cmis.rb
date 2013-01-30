@@ -1,7 +1,8 @@
 raise "You need to run JRuby to use CMIS" unless RUBY_PLATFORM =~ /java/
 
 require "cmis/version"
-require 'java' 
+require "java"
+require "active_model"
 
 Dir[File.join(File.dirname(__FILE__), "../target/dependency/*.jar")].each do |jar|
   require jar
@@ -135,5 +136,9 @@ module CMIS
     end
 
     content
+  end
+
+  class Document
+    extend ActiveModel::Naming
   end
 end
