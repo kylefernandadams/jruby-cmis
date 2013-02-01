@@ -159,9 +159,6 @@ module CMIS
         false
       end
 
-      def to_partial_path
-      end
-
       def errors
         obj = Object.new
         def obj.[](key)         [] end
