@@ -142,7 +142,9 @@ module CMIS
   module Model
     class Document
       extend ActiveModel::Naming
-
+      
+      cattr_accessor :session
+      
       def to_param
         nil
       end
@@ -169,7 +171,6 @@ module CMIS
       def to_partial_path
         "wtf!"
       end
-
     end
   end
 end
