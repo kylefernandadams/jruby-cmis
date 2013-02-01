@@ -1,24 +1,28 @@
 require 'spec_helper'
+require 'test/unit/assertions'
 
-describe "Active Model CMIS" do
-  shared_examples_for "ActiveModel" do
-    include ActiveModel::Lint::Tests
+class CompliantModel < CMIS::Model::Document
+end
 
-    # to_s is to support ruby-1.9
+
+describe CMIS::Model::Document do
+  include Test::Unit::Assertions
+  include ActiveModel::Lint::Tests
+
+  before :each do
+    @model = CompliantModel.new
+  end
+
+  def model
+    @model
+  end
+
+  describe "active model lint tests" do
     ActiveModel::Lint::Tests.public_instance_methods.map{|m| m.to_s}.grep(/^test/).each do |m|
       example m.gsub('_',' ') do
         send m
       end
     end
-
-    def model
-      subject
-    end
   end
-
-  describe CMIS::Document do
-    it_should_behave_like "ActiveModel"
-  end
-
-
+  
 end
