@@ -144,7 +144,30 @@ module CMIS
       extend ActiveModel::Naming
       
       cattr_accessor :session
+      attr_accessor :id, :name, :cmis_type, :parent
       
+      def initialize(attrs = nil)
+        if attrs != nil && attrs.is_a?(Hash)
+          @name = attrs[:name] if attrs.has_key?(:name)
+          @parent = attrs[:parent] if attrs.has_key?(:parent)
+          @cmis_type = attrs[:cmis_type] if attrs.has_key?(:cmis_type)
+        end
+
+        @cmis_type ||= "cmis:document"
+      end
+
+      def new?
+        id == nil    
+      end
+
+      def new_document?
+        new?
+      end
+
+      def new_record?
+        new?
+      end
+
       def to_param
         nil
       end

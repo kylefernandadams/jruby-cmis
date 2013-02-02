@@ -28,12 +28,32 @@ describe CMIS::Model::Document do
 
   describe "instance repository session" do
     it "should use the default session" do
-      @model.session.repository_info.name.should == "Main Repository"
+      @model.session.should == @session
     end
 
-    it "should override the default session" do
-      pending
+    it "should have a session" do
+      @model.session.should be_instance_of(Java::OrgApacheChemistryOpencmisClientRuntime::SessionImpl)
     end
   end
 
+  # Remember parent, name, type
+  describe "a new model" do
+    it "should be a new document" do
+      doc = CompliantModel.new
+      doc.id.should be_nil
+      doc.cmis_type.should == "cmis:document"
+      doc.name.should == nil
+      doc.parent.should == nil
+      doc.should be_new
+      doc.should be_new_document
+      doc.should be_new_record
+    end
+
+    it "should only set predefined attributes" do
+      doc = CompliantModel.new(name: "test", parent: "id12345", cmis_type: "cmis:custom_document", hoho: "hehe")
+      doc.name.should == "test"
+      doc.parent.should == "id12345"
+      doc.cmis_type.should == "cmis:custom_document"
+    end
+  end
 end
