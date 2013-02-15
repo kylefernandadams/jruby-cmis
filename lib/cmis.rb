@@ -71,7 +71,7 @@ module CMIS
         content = session.object_factory.create_content_stream(file.name, file.length, CMIS::MimeTypes.getMIMEType(file), stream)
         doc_props = { CMIS::PropertyIds::OBJECT_TYPE_ID => "cmis:document", CMIS::PropertyIds::NAME => name }
         doc_props.merge!(props) if props != nil && props.is_a?(Hash)
-        self.create_document(doc_props, content, CMIS::VersioningState::MAJOR)
+        self.create_document(java.util.HashMap.new(doc_props), content, CMIS::VersioningState::MAJOR)
       end
     end
 
@@ -88,7 +88,7 @@ module CMIS
       session_factory = SessionFactoryImpl.new_instance
       repo_id = self.repositories(url, user, password)[0].id if repo_id == nil
       
-      parameters = { 
+      params = { 
         SessionParameter::ATOMPUB_URL => url,
         SessionParameter::BINDING_TYPE => BindingType::ATOMPUB.value,
         SessionParameter::USER => user,
@@ -96,33 +96,33 @@ module CMIS
         SessionParameter::REPOSITORY_ID => repo_id
       }
 
-      session_factory.create_session(parameters)
+      session_factory.create_session(java.util.HashMap.new(params))
   end
 
   def self.create_session_with_soap(user, password, web_services, repo_id = nil)
     session_factory = SessionFactoryImpl.new_instance
     repo_id = self.repositories(url, user, password)[0].id if repo_id == nil
     
-    parameters = {
+    params = {
         SessionParameter::BINDING_TYPE => BindingType::WEBSERVICES.value,
         SessionParameter::USER => user,
         SessionParameter::PASSWORD => password,
         SessionParameter::REPOSITORY_ID => repo_id
     }.merge!(web_services)
 
-    session_factory.create_session(parameters)
+    session_factory.create_session(java.util.HashMap.new(params))
   end
 
   def self.repositories(url, user, password)
     session_factory = SessionFactoryImpl.new_instance
-      parameters = { 
+      params = { 
         SessionParameter::ATOMPUB_URL => url,
         SessionParameter::BINDING_TYPE => BindingType::ATOMPUB.value,
         SessionParameter::USER => user,
         SessionParameter::PASSWORD => password
       }
 
-    session_factory.get_repositories(parameters)
+    session_factory.get_repositories(java.util.HashMap.new(params))
   end
 
   def self.create_content_stream(filename, session)
