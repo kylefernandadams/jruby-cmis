@@ -56,7 +56,7 @@ module CMIS
       self.allowable_actions.allowable_actions.to_a
     end
   end
-  
+
   class FolderImpl
     def create_cmis_folder(name, props = nil)
       folder_props = { PropertyIds::OBJECT_TYPE_ID => "cmis:folder", PropertyIds::NAME => name }
@@ -84,6 +84,10 @@ module CMIS
     end
   end
 
+  # Explanation: https://github.com/jruby/jruby/wiki/Persistence
+  DocumentImpl.__persistent__ = true
+  FolderImpl.__persistent__ = true
+  
   def self.create_session(url, user, password, repo_id = nil)
       session_factory = SessionFactoryImpl.new_instance
       repo_id = self.repositories(url, user, password)[0].id if repo_id == nil
