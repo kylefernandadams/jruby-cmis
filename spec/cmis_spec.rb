@@ -304,6 +304,24 @@ describe "CMIS" do
         rel.target.id.should == target_doc.id
       end   
     end
+
+    # audit.cmischangelog.enabled=true required for Alfresco
+    describe "Content changes" do
+      it "should be possible to get content changes" do
+        latest_token = @session.repository_info.get_latest_change_log_token
+        @test_folder.create_cmis_folder(random_name)
+        changes = @session.get_content_changes(latest_token, true, 1000)
+        changes.get_change_events.should_not be_empty
+      end
+
+      it "should not change token if nothing is changed" do
+        latest_token = @session.repository_info.get_latest_change_log_token
+        #Do nothing
+        changes = @session.get_content_changes(latest_token, true, 1000);
+        new_token = changes.get_latest_change_log_token
+        new_token.should == latest_token
+      end
+    end
   end
 
   describe "Local Alfresco" do
