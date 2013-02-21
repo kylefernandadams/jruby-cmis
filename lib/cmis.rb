@@ -47,6 +47,10 @@ module CMIS
   FolderImpl = org.apache.chemistry.opencmis.client.runtime.FolderImpl
   DocumentImpl = org.apache.chemistry.opencmis.client.runtime.DocumentImpl
   
+  # Explanation: https://github.com/jruby/jruby/wiki/Persistence
+  DocumentImpl.__persistent__ = true
+  FolderImpl.__persistent__ = true
+  
   class DocumentImpl
     def download(destination_path)
       FileUtils.download(self, destination_path)
@@ -83,10 +87,6 @@ module CMIS
       self.allowable_actions.allowable_actions.to_a
     end
   end
-
-  # Explanation: https://github.com/jruby/jruby/wiki/Persistence
-  DocumentImpl.__persistent__ = true
-  FolderImpl.__persistent__ = true
   
   def self.create_session(url, user, password, repo_id = nil)
       session_factory = SessionFactoryImpl.new_instance
