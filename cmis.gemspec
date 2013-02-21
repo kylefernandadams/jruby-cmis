@@ -5,7 +5,7 @@ require 'cmis/version'
 
 Gem::Specification.new do |gem|
   gem.name          = "cmis"
-  gem.version       = Cmis::VERSION
+  gem.version       = CMIS::VERSION
   gem.authors       = ["Richard Nyström"]
   gem.email         = ["ricny046@gmail.com"]
   gem.description   = %q{A thin JRuby wrapper for the Apache Chemistry OpenCMIS client.}
