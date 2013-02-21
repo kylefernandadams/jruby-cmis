@@ -468,6 +468,18 @@ rescue StandardError => e
 end
 ```
 
+## Change log
+Many CMIS repositories has support to log changes in the repository:
+
+```ruby
+latest_token = @session.repository_info.get_latest_change_log_token
+changes = @session.get_content_changes(latest_token, true, 1000)
+        
+changes.get_change_events.each do |ce|
+  puts "ID: " + ce.get_object_id.to_s + " Change Type: " + ce.get_change_type.to_s
+end
+```
+
 ## Contributing
 
 1. Fork it
