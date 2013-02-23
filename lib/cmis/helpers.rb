@@ -14,20 +14,6 @@ module CMIS
     session_factory.create_session(java.util.HashMap.new(params))
   end
 
-  def self.create_session_with_soap(user, password, web_services, repo_id = nil)
-    session_factory = SessionFactoryImpl.new_instance
-    repo_id = self.repositories(url, user, password)[0].id if repo_id == nil
-    
-    params = {
-        SessionParameter::BINDING_TYPE => BindingType::WEBSERVICES.value,
-        SessionParameter::USER => user,
-        SessionParameter::PASSWORD => password,
-        SessionParameter::REPOSITORY_ID => repo_id
-    }.merge!(web_services)
-
-    session_factory.create_session(java.util.HashMap.new(params))
-  end
-
   def self.repositories(url, user, password)
     session_factory = SessionFactoryImpl.new_instance
       params = { 

@@ -325,26 +325,6 @@ describe "CMIS" do
   end
 
   describe "Local Alfresco" do
-    # Basic test for web service binding
-    it "should be possible to use web services" do
-        repo_id = CMIS::repositories("http://localhost:8181/alfresco/service/cmis", "admin", "admin")[0].id
-        ws_url = "http://localhost:8181/alfresco/cmis/"
-        ws_urls = {
-          CMIS::SessionParameter::WEBSERVICES_ACL_SERVICE => "#{ws_url}ACLService?wsdl",
-          CMIS::SessionParameter::WEBSERVICES_DISCOVERY_SERVICE => "#{ws_url}DiscoveryService?wsdl",
-          CMIS::SessionParameter::WEBSERVICES_MULTIFILING_SERVICE => "#{ws_url}MultiFilingService?wsdl",
-          CMIS::SessionParameter::WEBSERVICES_NAVIGATION_SERVICE => "#{ws_url}NavigationService?wsdl",
-          CMIS::SessionParameter::WEBSERVICES_OBJECT_SERVICE => "#{ws_url}ObjectService?wsdl",
-          CMIS::SessionParameter::WEBSERVICES_POLICY_SERVICE => "#{ws_url}PolicyService?wsdl",
-          CMIS::SessionParameter::WEBSERVICES_RELATIONSHIP_SERVICE => "#{ws_url}RelationshipService?wsdl",
-          CMIS::SessionParameter::WEBSERVICES_REPOSITORY_SERVICE => "#{ws_url}RepositoryService?wsdl",
-          CMIS::SessionParameter::WEBSERVICES_VERSIONING_SERVICE => "#{ws_url}VersioningService?wsdl"
-        }
-
-        @ws_session = CMIS::create_session_with_soap("admin", "admin", ws_urls, repo_id)
-        @ws_session.locale.should_not be_nil
-    end
-
     atom_url = "http://localhost:8181/alfresco/service/cmis"
     user = "admin"
     password = "admin"
