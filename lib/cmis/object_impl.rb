@@ -24,16 +24,14 @@ module CMIS
     end
 
     def create_cmis_document(name, filename, props = nil)
-      if filename != nil && filename.length > 0
-        content = CMIS::create_content_stream(filename, session)
-        doc_props = { CMIS::PropertyIds::OBJECT_TYPE_ID => "cmis:document", CMIS::PropertyIds::NAME => name }
-        doc_props.merge!(props) if props != nil && props.is_a?(Hash)
-        self.create_document(java.util.HashMap.new(doc_props), content, CMIS::VersioningState::MAJOR)
-      end
+      content = CMIS::create_content_stream(filename, session)
+      doc_props = { PropertyIds::OBJECT_TYPE_ID => "cmis:document", PropertyIds::NAME => name }
+      doc_props.merge!(props) if props != nil && props.is_a?(Hash)
+      self.create_document(java.util.HashMap.new(doc_props), content, VersioningState::MAJOR)
     end
 
     def create_text_doc(name, content)
-      FileUtils.create_text_document(self.id, name, content, "cmis:document", CMIS::VersioningState::MAJOR, session)
+      FileUtils.create_text_document(self.id, name, content, "cmis:document", VersioningState::MAJOR, session)
     end
 
     def allowed_actions
