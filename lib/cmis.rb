@@ -7,6 +7,7 @@ Dir[File.join(File.dirname(__FILE__), "../target/dependency/*.jar")].each do |ja
 end
 
 require 'cmis/version'
+require 'cmis/enums'
 require 'cmis/imports'
 require 'cmis/object_impl'
 require 'cmis/helpers'
