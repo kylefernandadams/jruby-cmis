@@ -6,7 +6,7 @@ More information about Apache Chemistry can be found here: http://chemistry.apac
 
 [![Code Climate](https://codeclimate.com/github/ricn/cmis.png)](https://codeclimate.com/github/ricn/cmis)
 
-## What is CMIS
+## What is CMIS?
 
 Content Management Interoperability Services (CMIS) is an open standard that defines an abstraction layer for controlling diverse document management systems and repositories using web protocols. CMIS defines a domain model plus Web Services and Restful AtomPub (RFC5023) bindings that can be used by applications.
 
