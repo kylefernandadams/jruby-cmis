@@ -100,7 +100,7 @@ describe "CMIS" do
         file_name = random_name + ".pdf"
         id = @test_folder.create_cmis_document(file_name, file)      
         context = @session.create_operation_context
-        context.rendition_filter_string = "cmis:thumbnail"
+        context.rendition_filter_string = "*"
         @session.clear
         doc = @session.get_object(id, context)
 
@@ -317,7 +317,7 @@ describe "CMIS" do
       it "should not change token if nothing is changed" do
         latest_token = @session.repository_info.get_latest_change_log_token
         #Do nothing
-        changes = @session.get_content_changes(latest_token, true, 1000);
+        changes = @session.get_content_changes(latest_token, true, 1000)
         new_token = changes.get_latest_change_log_token
         new_token.should == latest_token
       end
