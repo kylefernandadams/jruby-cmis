@@ -325,7 +325,7 @@ puts "Rendition support: " + @session.repository_info.capabilities.renditions_ca
 
 id = @session.root_folder.create_text_doc("simple file.txt", "My content")
 context = @session.create_operation_context
-context.rendition_filter_string = "cmis:thumbnail"
+context.rendition_filter_string = "*"
 doc = @session.get_object(id, context)
 
 renditions = doc.renditions
