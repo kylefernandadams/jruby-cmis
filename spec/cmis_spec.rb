@@ -325,7 +325,7 @@ describe "CMIS" do
   end
 
   describe "Local Alfresco" do
-    atom_url = "http://localhost:8181/alfresco/service/cmis"
+    atom_url = "http://localhost:8080/alfresco/api/-default-/public/cmis/versions/1.1/browser"
     user = "admin"
     password = "admin"
 
@@ -333,18 +333,11 @@ describe "CMIS" do
   end
 
   describe "Alfresco" do
-    atom_url = "http://cmis.alfresco.com/cmisatom"
+    atom_url = "http://cmis.alfresco.com/cmisbrowser"
     user = "admin"
     password = "admin"
     
     #it_behaves_like "a CMIS repository", atom_url, user, password
   end
 
-  describe "Nuxeo" do
-    atom_url = "http://cmis.demo.nuxeo.org/nuxeo/atom/cmis"
-    user = "Administrator"
-    password = "Administrator"
-    
-    #it_behaves_like "a CMIS repository", atom_url, user, password
-  end
 end

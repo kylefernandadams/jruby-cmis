@@ -10,15 +10,6 @@ More information about Apache Chemistry can be found here: http://chemistry.apac
 
 Content Management Interoperability Services (CMIS) is an open standard that defines an abstraction layer for controlling diverse document management systems and repositories using web protocols. CMIS defines a domain model plus Web Services and Restful AtomPub (RFC5023) bindings that can be used by applications.
 
-Here are a few CMIS-compliant content repositories:
-
-* [Alfresco](http://www.alfresco.com)
-* [Nuxeo](http://www.nuxeo.com)
-* [EMC Documentum](http://www.emc.com/domains/documentum/index.htm)
-* [Sharepoint](http://sharepoint.microsoft.com/en-us/Pages/default.aspx)
-* [IBM FileNet Content Manager](http://www-01.ibm.com/software/data/content-management/filenet-content-manager/)
-* [KnowledgeTree](https://www.knowledgetree.com/)
-
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -37,7 +28,7 @@ Or install it yourself as:
 ## Notes about JRuby and OpenCMIS
 Every call you do in this library that returns an object actually returns a real Java object from OpenCMIS so you have access to all the functionality that OpenCMIS provides.
 
-If you want to do something that is not described in the documentation below you can read the [OpenCMIS JavaDoc](http://chemistry.apache.org/java/0.9.0/maven/apidocs/) and you should figure out how to do it.
+If you want to do something that is not described in the documentation below you can read the [OpenCMIS JavaDoc](http://chemistry.apache.org/java/0.11.0/maven/apidocs/) and you should figure out how to do it.
 
 ## Usage
 
@@ -46,9 +37,7 @@ This guide is for JRuby developers who want to access CMIS-compliant content rep
 If you want to run the code snippets below you can download and install Alfresco. You can find the version that fits your platform here: http://wiki.alfresco.com/wiki/Download_and_Install_Alfresco
 
 You can also run the examples using the Public Alfresco CMIS server. More information can be found here: http://cmis.alfresco.com. The atom url for the public 
-server is http://cmis.alfresco.com/cmisatom.
-
-Nuxeo also provides a demo server. More information can be found here: http://doc.nuxeo.com/display/NXDOC/CMIS+for+Nuxeo#CMISforNuxeo-Onlinedemo .
+server is http://cmis.alfresco.com/cmisbrowser.
 
 The documentation below is heavily based on the [OpenCMIS Client API Developer's Guide](http://chemistry.apache.org/java/developing/guide.html)
 
@@ -58,7 +47,7 @@ To be able to do anything useful on a CMIS repository, you must first find a rep
 
 ```ruby
 require 'cmis'
-atom_url = "http://localhost:8080/alfresco/service/cmis"
+atom_url = "http://localhost:8080/alfresco/api/-default-/public/cmis/versions/1.1/browser"
 user = "admin"
 password = "admin"
 @session = CMIS::create_session(atom_url, user, password)
@@ -74,7 +63,7 @@ puts "Trying to connect to a repository with id #{available_repos[0].id}"
 
 ```
 
-Note: The create_session method returns a real [Session](http://chemistry.apache.org/java/0.9.0/maven/apidocs/org/apache/chemistry/opencmis/client/api/Session.html) object that is used in OpenCMIS so you have access to every functionality that the Session object provides.
+Note: The create_session method returns a real [Session](http://chemistry.apache.org/java/0.11.0/maven/apidocs/org/apache/chemistry/opencmis/client/api/Session.html) object that is used in OpenCMIS so you have access to every functionality that the Session object provides.
 
 ## Working with folders and documents
 
@@ -106,7 +95,7 @@ root.create_folder(folder_props)
 puts folder.name
 ```
 
-Note: When you create a folder it will return an actual Java OpenCMIS Folder object. That means you have access to everything it provides. [More information can be found in the JavaDoc for the Folder interface](http://chemistry.apache.org/java/0.9.0/maven/apidocs/org/apache/chemistry/opencmis/client/api/Folder.html)
+Note: When you create a folder it will return an actual Java OpenCMIS Folder object. That means you have access to everything it provides. [More information can be found in the JavaDoc for the Folder interface](http://chemistry.apache.org/java/0.11.0/maven/apidocs/org/apache/chemistry/opencmis/client/api/Folder.html)
 
 ### Creating/Uploading documents
 
@@ -129,7 +118,7 @@ doc = @session.get_object(id)
 puts doc.name
 ```
 
-Note: When you create a document it will return an actual Java OpenCMIS Document object. That means you have access to everything it provides. [More information can be found in the JavaDoc for the Document interface](http://chemistry.apache.org/java/0.9.0/maven/apidocs/org/apache/chemistry/opencmis/client/api/Document.html)
+Note: When you create a document it will return an actual Java OpenCMIS Document object. That means you have access to everything it provides. [More information can be found in the JavaDoc for the Document interface](http://chemistry.apache.org/java/0.11.0/maven/apidocs/org/apache/chemistry/opencmis/client/api/Document.html)
 
 #### Download a document to your local disc
 
@@ -209,7 +198,7 @@ end
 
 ### Getting a property explicitly
 
-Each object type has a known set of properties, and you can retrieve these explicitly. For example, the document type has a set of properties described by the [DocumentProperties](http://chemistry.apache.org/java/0.9.0/maven/apidocs/org/apache/chemistry/opencmis/client/api/DocumentProperties.html) interface, and you can use the methods on this interface to retrieve the value a property.
+Each object type has a known set of properties, and you can retrieve these explicitly. For example, the document type has a set of properties described by the [DocumentProperties](http://chemistry.apache.org/java/0.11.0/maven/apidocs/org/apache/chemistry/opencmis/client/api/DocumentProperties.html) interface, and you can use the methods on this interface to retrieve the value a property.
 
 ```ruby
 # For root folder
@@ -236,7 +225,7 @@ allowed_actions.each do |a|
 end
 ```
 
-A complete list of actions can be found here: http://chemistry.apache.org/java/0.9.0/maven/apidocs/org/apache/chemistry/opencmis/commons/enums/Action.html
+A complete list of actions can be found here: http://chemistry.apache.org/java/0.11.0/maven/apidocs/org/apache/chemistry/opencmis/commons/enums/Action.html
 
 ## Working with CMIS Queries
 
@@ -291,7 +280,7 @@ puts "ACL: " + cap.acl_capability.value
 
 ## Paging
 When you retrieve the children of a CMIS object, the result set returned is of an arbitrary size. Retrieving a large result set synchronously could increase response times. To improve performance, you can use OpenCMIS's paging support to control the size of the result set retrieved from the repository. To use paging, 
-you must specify an [OperationContext](http://chemistry.apache.org/java/0.9.0/maven/apidocs/org/apache/chemistry/opencmis/client/api/OperationContext.html) when invoking children method call on the parent object. The OperationContext specifies the maximum number of items to retrieve in a page.
+you must specify an [OperationContext](http://chemistry.apache.org/java/0.11.0/maven/apidocs/org/apache/chemistry/opencmis/client/api/OperationContext.html) when invoking children method call on the parent object. The OperationContext specifies the maximum number of items to retrieve in a page.
 
 ```ruby
 root = @session.root_folder
@@ -455,9 +444,9 @@ puts rel.target.id
 ```
 
 ## Exceptions
-If something goes wrong in an OpenCMIS method, an exception will be thrown. All OpenCMIS exceptions extend [CmisBaseException](http://chemistry.apache.org/java/0.9.0/maven/apidocs/org/apache/chemistry/opencmis/commons/exceptions/package-tree.html) which is a Java runtime exception. Because all exceptions are runtime, you do not have to catch or specify the exceptions in your own code.
+If something goes wrong in an OpenCMIS method, an exception will be thrown. All OpenCMIS exceptions extend [CmisBaseException](http://chemistry.apache.org/java/0.11.0/maven/apidocs/org/apache/chemistry/opencmis/commons/exceptions/package-tree.html) which is a Java runtime exception. Because all exceptions are runtime, you do not have to catch or specify the exceptions in your own code.
 
-When you are using the ATOMPUB binding, [CmisBaseException](http://chemistry.apache.org/java/0.9.0/maven/apidocs/org/apache/chemistry/opencmis/commons/exceptions/package-tree.html) provides a error_content method which returns the content of the error page returned from the server, if there is one. This can be very useful when debugging, as the server side is normally able to provide far more information that the client. 
+When you are using the ATOMPUB binding, [CmisBaseException](http://chemistry.apache.org/java/0.11.0/maven/apidocs/org/apache/chemistry/opencmis/commons/exceptions/package-tree.html) provides a error_content method which returns the content of the error page returned from the server, if there is one. This can be very useful when debugging, as the server side is normally able to provide far more information that the client. 
 In the following example, a CMISInvalidArgumentException exception is forced by trying to create a folder with an invalid type. The rescue block prints the server's error page:
 
 ```ruby

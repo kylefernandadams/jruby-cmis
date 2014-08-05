@@ -3,7 +3,7 @@ require 'cmis'
 ## Connecting to a CMIS repository (the simple way)
 # To be able to do anything useful on a CMIS repository, you must first find a repository, and create a session with it:
 
-atom_url = "http://localhost:8181/alfresco/service/cmis"
+atom_url = "http://localhost:8080/alfresco/api/-default-/public/cmis/versions/1.1/browser"
 user = "admin"
 password = "admin"
 @session = CMIS::create_session(atom_url, user, password)
